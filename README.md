@@ -60,7 +60,7 @@ The Trust Layer introduces a groundbreaking security paradigm that bridges the g
 ---
 
 ## 🌍 Live Demo
-**[INSERT VERCEL URL HERE]**
+https://codefury1.vercel.app/#/trust-layer
 
 * **`/trust-layer` (The Solution):** Step into the future of inclusive finance. Generate your baseline token, trigger a tremor, and watch the session dynamically extend, buttons transition to hold-to-confirm, and the transaction safely process.
 
