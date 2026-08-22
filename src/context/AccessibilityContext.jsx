@@ -50,6 +50,26 @@ export function AccessibilityProvider({ children }) {
   };
 
   // 3. VOICE OUTPUT (Text-to-Speech via browser SpeechSynthesis API)
+  
+  // Global unlock for Web Speech API on first interaction
+  useEffect(() => {
+    const unlockSpeech = () => {
+      if ('speechSynthesis' in window && window.speechSynthesis.getVoices().length === 0) {
+        const utterance = new SpeechSynthesisUtterance('');
+        utterance.volume = 0;
+        window.speechSynthesis.speak(utterance);
+      }
+      window.removeEventListener('click', unlockSpeech);
+      window.removeEventListener('touchstart', unlockSpeech);
+    };
+    window.addEventListener('click', unlockSpeech);
+    window.addEventListener('touchstart', unlockSpeech);
+    return () => {
+      window.removeEventListener('click', unlockSpeech);
+      window.removeEventListener('touchstart', unlockSpeech);
+    };
+  }, []);
+
   const speakText = (text) => {
     if (!('speechSynthesis' in window)) {
       alert('Text-to-speech is not supported in this browser.');
