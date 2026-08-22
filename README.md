@@ -45,9 +45,6 @@ The Trust Layer introduces a groundbreaking security paradigm that bridges the g
 ### 🌐 Universal Localization
 * Seamless, live UI translation across English, Hindi, Kannada, and Tamil. This localization extends deeply into the platform, automatically translating the Saathi AI responses, Web Speech synthesis prompts, and voice recognition models.
 
-### 🕵️‍♂️ The Fraud Simulation Engine
-* **The "Victim Site" Dummy Bank:** To prove our concept, we built a deliberately vulnerable mock banking portal. Users can toggle "Simulate Tremor" to watch standard reCAPTCHA v3 systems brutally fail and lock them out.
-* **The Trust Layer Dashboard:** Switch to the protected environment to witness the exact same tremor inputs be gracefully absorbed, verified, and processed safely.
 
 ---
 
@@ -65,7 +62,6 @@ The Trust Layer introduces a groundbreaking security paradigm that bridges the g
 ## 🌍 Live Demo
 **[INSERT VERCEL URL HERE]**
 
-* **`/dummy-bank` (Victim Site):** Experience the problem firsthand. Inject simulated tremors and watch a standard banking security system lock you out.
 * **`/trust-layer` (The Solution):** Step into the future of inclusive finance. Generate your baseline token, trigger a tremor, and watch the session dynamically extend, buttons transition to hold-to-confirm, and the transaction safely process.
 
 ---
