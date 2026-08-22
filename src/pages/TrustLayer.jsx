@@ -536,7 +536,15 @@ export default function TrustLayer({ setCurrentRoute }) {
 
   // Ensure the login page acts as a clean slate (reset settings on logout/mount)
   useEffect(() => {
-    if (!isAuthenticated) {
+    useEffect(() => {
+    if (showConfirmation && !showPinPad && !transferSuccess) {
+      const msgTemplate = t('spokenConfirmPrompt') || 'Proceed to pay AMOUNT to RECIPIENT. Please confirm or cancel.';
+      const msg = msgTemplate.replace('AMOUNT', amount).replace('RECIPIENT', recipient);
+      speakText(msg);
+    }
+  }, [showConfirmation, showPinPad, transferSuccess, amount, recipient, t, speakText]);
+  
+  if (!isAuthenticated) {
       setLanguage('en');
       setIsHighContrast(false);
       setIsSimplifyText(false);
@@ -698,13 +706,7 @@ export default function TrustLayer({ setCurrentRoute }) {
   }
 
   
-  useEffect(() => {
-    if (showConfirmation && !showPinPad && !transferSuccess) {
-      const msgTemplate = t('spokenConfirmPrompt') || 'Proceed to pay AMOUNT to RECIPIENT. Please confirm or cancel.';
-      const msg = msgTemplate.replace('AMOUNT', amount).replace('RECIPIENT', recipient);
-      speakText(msg);
-    }
-  }, [showConfirmation, showPinPad, transferSuccess, amount, recipient, t, speakText]);
+  
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-4 font-sans">
