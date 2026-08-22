@@ -265,7 +265,7 @@ export default function DummyBank() {
       {/* Visual Simulation Overlay: Tremor Jitter Badge */}
       {simulationMode === 'TREMOR' && (
         <div className="fixed top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none">
-          <div className="simulated-cursor-jitter bg-amber-600 text-white px-4 py-2 rounded-2xl text-xs font-mono font-bold shadow-2xl border-2 border-yellow-300 flex items-center gap-2">
+          <div className="simulated-cursor-jitter bg-warning text-white px-4 py-2 rounded-2xl text-xs font-mono font-bold shadow-2xl border-2 border-yellow-300 flex items-center gap-2">
             <MousePointer className="w-4 h-4 text-yellow-300 animate-bounce" />
             <span>Simulating Tremor (High Jitter & Irregular Keystroke Pauses)</span>
           </div>
@@ -278,7 +278,7 @@ export default function DummyBank() {
           style={{ transform: `translate(${botCursorPos.x}px, ${botCursorPos.y}px)` }}
           className="fixed top-0 left-0 z-50 pointer-events-none transition-all duration-200 ease-linear"
         >
-          <div className="bg-red-600 text-white px-3 py-1.5 rounded-lg text-[11px] font-mono font-bold shadow-2xl border-2 border-white flex items-center gap-1.5">
+          <div className="bg-danger text-textInverse px-3 py-1.5 rounded-lg text-[11px] font-mono font-bold shadow-2xl border-2 border-white flex items-center gap-1.5">
             <Bot className="w-4 h-4 text-white animate-spin" />
             <span>Bot Script (Perfect Straight-Line Trajectory)</span>
           </div>
@@ -289,7 +289,7 @@ export default function DummyBank() {
       <div className="max-w-4xl mx-auto bg-white border border-[#7f9db9] shadow-md mb-3">
         <div className="bg-gradient-to-r from-[#003366] via-[#004080] to-[#002244] text-white p-2.5 flex items-center justify-between border-b border-[#001f3f]">
           <div className="flex items-center space-x-2">
-            <Building className="w-5 h-5 text-amber-300" />
+            <Building className="w-5 h-5 text-warning" />
             <div>
               <h1 className="font-bold text-sm tracking-wide">FIRST NATIONAL TRUST BANK</h1>
               <p className="text-[10px] text-blue-200 uppercase tracking-wider">Online Commercial & Retail Banking System v4.18 (Legacy Security Gateway)</p>
@@ -297,7 +297,7 @@ export default function DummyBank() {
           </div>
           <div className="text-right text-[10px] text-blue-100 hidden sm:block">
             <div>Encrypted 128-Bit Session</div>
-            <div className="text-amber-300 font-mono">SERVER: SVR-NY-PROD-09</div>
+            <div className="text-warning font-mono">SERVER: SVR-NY-PROD-09</div>
           </div>
         </div>
 
@@ -306,7 +306,7 @@ export default function DummyBank() {
           <span className="text-[#333]">
             {isLoggedIn ? `Authenticated User: ${username} | Account: 0049-1182-9920-X` : 'Security Status: Unauthenticated Guest Session'}
           </span>
-          <span className="text-red-700 font-semibold flex items-center gap-1">
+          <span className="text-danger font-semibold flex items-center gap-1">
             <Lock className="w-3 h-3" /> Unprotected Legacy Gateway (Zero Accessibility Adaptation)
           </span>
         </div>
@@ -318,24 +318,24 @@ export default function DummyBank() {
         {/* Full-Screen Hostile Lockout Screen (Triggered when reCAPTCHA v3 Score < 0.50) */}
         {isLocked && (
           <div className="absolute inset-0 bg-red-950/95 text-white z-50 p-6 flex flex-col items-center justify-center text-center animate-in fade-in zoom-in-95 duration-200">
-            <div className="max-w-lg bg-red-900/90 border-4 border-red-500 p-6 shadow-2xl rounded-none text-left">
-              <div className="flex items-center gap-3 border-b-2 border-red-500 pb-3 mb-4">
+            <div className="max-w-lg bg-danger border-4 border-danger p-6 shadow-2xl rounded-none text-left">
+              <div className="flex items-center gap-3 border-b-2 border-danger pb-3 mb-4">
                 <ShieldAlert className="w-10 h-10 text-yellow-300 shrink-0 animate-bounce" />
                 <div>
                   <h2 className="text-lg font-black tracking-wider text-yellow-300 uppercase">
                     ⚠️ SUSPICIOUS ACTIVITY DETECTED
                   </h2>
-                  <p className="text-xs text-red-200 font-bold uppercase">Google reCAPTCHA v3 Risk Defense Intercept</p>
+                  <p className="text-xs text-danger font-bold uppercase">Google reCAPTCHA v3 Risk Defense Intercept</p>
                 </div>
               </div>
 
               {/* Specific Reason & Score Tag */}
-              <div className="bg-black/50 p-3.5 border border-red-700 font-mono text-xs mb-4">
+              <div className="bg-black/50 p-3.5 border border-danger font-mono text-xs mb-4">
                 <span className="text-yellow-400 font-bold block mb-1">REASON FOR LOCKOUT:</span>
                 <p className="text-white text-sm font-bold">{lockReason}</p>
-                <div className="mt-2 text-[11px] text-red-300 flex items-center gap-2">
+                <div className="mt-2 text-[11px] text-danger flex items-center gap-2">
                   <span>Calculated Risk Score:</span>
-                  <span className="bg-red-700 text-white px-2 py-0.5 font-bold rounded">
+                  <span className="bg-danger text-textInverse px-2 py-0.5 font-bold rounded">
                     {lockScore !== null ? lockScore.toFixed(2) : '0.31'} (Threshold: 0.50)
                   </span>
                 </div>
@@ -351,8 +351,8 @@ export default function DummyBank() {
                 Standard systems cannot distinguish a struggling disabled human from an attack script!
               </div>
 
-              <div className="flex flex-wrap gap-2 justify-between items-center border-t border-red-800 pt-3">
-                <span className="text-[10px] text-red-300 font-mono">ACTION REQUIRED: PHYSICAL BRANCH VISIT</span>
+              <div className="flex flex-wrap gap-2 justify-between items-center border-t border-danger pt-3">
+                <span className="text-[10px] text-danger font-mono">ACTION REQUIRED: PHYSICAL BRANCH VISIT</span>
                 <button
                   onClick={handleReset}
                   className="bg-yellow-400 hover:bg-yellow-300 text-black font-bold px-4 py-2 text-xs uppercase flex items-center gap-1.5 shadow-md active:translate-y-0.5"
@@ -415,7 +415,7 @@ export default function DummyBank() {
                 />
               </div>
 
-              <div className="bg-amber-50 border border-amber-200 p-2 text-[10px] text-amber-900">
+              <div className="bg-warningBg border border-warning p-2 text-[10px] text-warning">
                 <strong>Note:</strong> Press "Log In" to access the wire transfer portal.
               </div>
 
@@ -441,7 +441,7 @@ export default function DummyBank() {
                 <span className="text-gray-500">Available Balance:</span> <strong className="text-green-800">₹48,210.00 INR</strong>
               </div>
               <div className="flex items-center gap-2">
-                <span className="inline-flex items-center px-2 py-0.5 bg-red-100 text-red-800 text-[10px] font-bold border border-red-300">
+                <span className="inline-flex items-center px-2 py-0.5 bg-dangerBg text-danger text-[10px] font-bold border border-danger">
                   <Clock className="w-3 h-3 mr-1 animate-spin" /> Session Timeout: {timeRemaining}s
                 </span>
                 <button
@@ -456,19 +456,19 @@ export default function DummyBank() {
             {/* LIVE reCAPTCHA v3 Score Screen Badge */}
             <div className={`p-2.5 mb-4 border flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono ${
               recaptchaScore >= 0.5 
-                ? 'bg-emerald-50 border-emerald-300 text-emerald-900' 
-                : 'bg-red-50 border-red-400 text-red-900 animate-pulse'
+                ? 'bg-successBg border-success text-success' 
+                : 'bg-dangerBg border-danger text-danger animate-pulse'
             }`}>
               <div className="flex items-center gap-2">
                 {recaptchaScore >= 0.5 ? (
-                  <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <ShieldCheck className="w-4 h-4 text-success shrink-0" />
                 ) : (
-                  <ShieldX className="w-4 h-4 text-red-600 shrink-0" />
+                  <ShieldX className="w-4 h-4 text-danger shrink-0" />
                 )}
                 <div>
                   <span>Google reCAPTCHA v3 Live Score: </span>
                   <strong className={`px-2 py-0.5 rounded text-xs ${
-                    recaptchaScore >= 0.5 ? 'bg-emerald-200 text-emerald-950' : 'bg-red-600 text-white'
+                    recaptchaScore >= 0.5 ? 'bg-success text-textInverse' : 'bg-danger text-textInverse'
                   }`}>
                     {recaptchaScore.toFixed(2)}
                   </strong>
@@ -480,9 +480,9 @@ export default function DummyBank() {
 
               <div className="text-[10px] font-bold">
                 {recaptchaScore >= 0.5 ? (
-                  <span className="text-emerald-700">STATUS: HUMAN PASS ✅</span>
+                  <span className="text-success">STATUS: HUMAN PASS ✅</span>
                 ) : (
-                  <span className="text-red-700">STATUS: FRAUD LOCK TRIGGERED 🛑</span>
+                  <span className="text-danger">STATUS: FRAUD LOCK TRIGGERED 🛑</span>
                 )}
               </div>
             </div>
@@ -497,7 +497,7 @@ export default function DummyBank() {
               {/* Recipient Name Field */}
               <div>
                 <label className="block text-[11px] font-bold text-gray-800 mb-1">
-                  {t('recipientLabel')} <span className="text-red-600">*</span>:
+                  {t('recipientLabel')} <span className="text-danger">*</span>:
                 </label>
                 <input
                   type="text"
@@ -512,7 +512,7 @@ export default function DummyBank() {
               {/* Transfer Amount Field */}
               <div>
                 <label className="block text-[11px] font-bold text-gray-800 mb-1">
-                  {t('amountLabel')} <span className="text-red-600">*</span>:
+                  {t('amountLabel')} <span className="text-danger">*</span>:
                 </label>
                 <div className="relative">
                   <span className="absolute left-2.5 top-1.5 text-gray-700 font-bold font-sans">₹</span>
@@ -553,15 +553,15 @@ export default function DummyBank() {
 
               {/* OTP Verification Field */}
               <div className="border-t border-[#e0e0e0] pt-3">
-                <div className="bg-yellow-50 border border-yellow-200 p-2 mb-2 text-[10px] text-yellow-900 flex justify-between items-center">
+                <div className="bg-yellow-50 border border-yellow-200 p-2 mb-2 text-[10px] text-warning flex justify-between items-center">
                   <span>
                     🔑 {t('smsSimulatedNotice')} <strong className="font-mono text-xs bg-yellow-200 px-1 py-0.5 border border-yellow-400">{actualOtp}</strong>
                   </span>
-                  <span className="text-red-700 font-bold">Attempts: {otpRetries} / 3</span>
+                  <span className="text-danger font-bold">Attempts: {otpRetries} / 3</span>
                 </div>
 
                 <label className="block text-[11px] font-bold text-gray-800 mb-1">
-                  {t('otpLabel')} <span className="text-red-600">*</span>:
+                  {t('otpLabel')} <span className="text-danger">*</span>:
                 </label>
                 <input
                   type="text"
@@ -576,7 +576,7 @@ export default function DummyBank() {
                 />
 
                 {otpErrorMessage && (
-                  <p className="text-red-600 font-bold text-[10px] mt-1 flex items-center gap-1">
+                  <p className="text-danger font-bold text-[10px] mt-1 flex items-center gap-1">
                     <AlertTriangle className="w-3 h-3" /> {otpErrorMessage}
                   </p>
                 )}
@@ -585,7 +585,7 @@ export default function DummyBank() {
               {/* Actions */}
               <div className="border-t border-[#d4d0c8] pt-3 flex items-center justify-between">
                 <div className="text-[10px] text-gray-500">
-                  Strict timer: <span className="text-red-600 font-mono font-bold">{timeRemaining}s remaining</span>
+                  Strict timer: <span className="text-danger font-mono font-bold">{timeRemaining}s remaining</span>
                 </div>
                 
                 <div className="flex gap-2">

@@ -20,6 +20,8 @@ export default function AccessibilityMenu() {
     isHighContrast,
     setIsHighContrast,
     isSimplifyText,
+    isCalmMode,
+    setIsCalmMode,
     setIsSimplifyText,
     isMenuOpen,
     setIsMenuOpen
@@ -45,9 +47,10 @@ export default function AccessibilityMenu() {
     setColorBlindness('none');
     setIsHighContrast(false);
     setIsSimplifyText(false);
+    setIsCalmMode(false);
   };
 
-  const hasActiveModifiers = language !== 'en' || colorBlindness !== 'none' || isHighContrast || isSimplifyText;
+  const hasActiveModifiers = language !== 'en' || colorBlindness !== 'none' || isHighContrast || isSimplifyText || isCalmMode;
 
   return (
     <div className="relative z-50">
@@ -57,18 +60,18 @@ export default function AccessibilityMenu() {
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         title="Open Accessibility & Language Profile Settings"
         aria-label="Open Accessibility Settings"
-        className={`px-3 py-1.5 rounded-2xl text-xs font-bold flex items-center gap-2 transition-all shadow-md active:scale-95 ${
+        className={`px-5 py-2.5 rounded-2xl text-sm font-extrabold flex items-center gap-2 transition-all shadow-md active:scale-95 ${
           hasActiveModifiers
-            ? 'bg-amber-500 text-slate-950 ring-2 ring-amber-300 animate-pulse'
-            : 'bg-slate-800 hover:bg-slate-700 text-white border border-slate-700'
+            ? 'bg-warning text-slate-950 ring-2 ring-warning animate-pulse'
+            : 'bg-bgInverse hover:bg-slate-700 text-textInverse border border-slate-700'
         }`}
       >
-        <Eye className="w-4 h-4 text-teal-300" />
+        <Eye className="w-4 h-4 text-accent" />
         <span className="hidden sm:inline">
           {language !== 'en' ? `Language: ${language.toUpperCase()}` : 'Accessibility'}
         </span>
         {hasActiveModifiers && (
-          <span className="w-2 h-2 rounded-full bg-slate-950"></span>
+          <span className="w-2 h-2 rounded-full bg-bgInverse"></span>
         )}
       </button>
 
@@ -81,22 +84,22 @@ export default function AccessibilityMenu() {
             onClick={() => setIsMenuOpen(false)}
           />
 
-          <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-slate-900 border-2 border-teal-500/50 rounded-3xl p-5 shadow-2xl text-white z-50 animate-in fade-in zoom-in-95 duration-200">
+          <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-bgInverse border-2 border-accent rounded-3xl p-5 shadow-2xl text-textInverse z-50 animate-in fade-in zoom-in-95 duration-200">
             {/* Header */}
             <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-xl bg-teal-500/20 text-teal-300 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-xl bg-accentBg text-accent flex items-center justify-center">
                   <Sliders className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm text-white">Accessibility Profiles</h3>
-                  <p className="text-[10px] text-slate-400">Multi-language, voice TTS, SVG & contrast</p>
+                  <h3 className="font-bold text-sm text-textInverse">Accessibility Profiles</h3>
+                  <p className="text-[10px] text-slate-500">Multi-language, voice TTS, SVG & contrast</p>
                 </div>
               </div>
 
               <button
                 onClick={() => setIsMenuOpen(false)}
-                className="p-1 text-slate-400 hover:text-white rounded-lg"
+                className="p-1 text-slate-500 hover:text-textInverse rounded-lg"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -107,15 +110,15 @@ export default function AccessibilityMenu() {
               <div>
                 <label className="block font-bold text-slate-300 mb-1.5 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
-                    <Languages className="w-3.5 h-3.5 text-teal-400" />
+                    <Languages className="w-3.5 h-3.5 text-accent" />
                     <span>Language / भाषा / ಭಾಷೆ / மொழி:</span>
                   </span>
-                  <span className="text-[10px] text-teal-300 font-mono">Voice & Text</span>
+                  <span className="text-[10px] text-accent font-mono">Voice & Text</span>
                 </label>
                 <select
                   value={language}
                   onChange={(e) => setLanguage(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-xs text-white focus:border-teal-400 outline-none transition-all font-medium"
+                  className="w-full bg-bgInverse border border-slate-700 rounded-xl p-2.5 text-xs text-textInverse focus:border-accent outline-none transition-all font-medium"
                 >
                   {languageOptions.map((opt) => (
                     <option key={opt.id} value={opt.id}>
@@ -123,8 +126,8 @@ export default function AccessibilityMenu() {
                     </option>
                   ))}
                 </select>
-                <p className="text-[10px] text-slate-400 mt-1 flex items-center gap-1">
-                  <Volume2 className="w-3 h-3 text-teal-400" />
+                <p className="text-[10px] text-slate-500 mt-1 flex items-center gap-1">
+                  <Volume2 className="w-3 h-3 text-accent" />
                   <span>Updates text labels, Web Speech input, and audio TTS instructions.</span>
                 </p>
               </div>
@@ -133,17 +136,17 @@ export default function AccessibilityMenu() {
               <div className="pt-2 border-t border-slate-800">
                 <label className="block font-bold text-slate-300 mb-1.5 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
-                    <Eye className="w-3.5 h-3.5 text-teal-400" />
+                    <Eye className="w-3.5 h-3.5 text-accent" />
                     <span>Color Blindness Filter:</span>
                   </span>
                   {colorBlindness !== 'none' && (
-                    <span className="text-[10px] text-teal-300 font-mono">SVG Active</span>
+                    <span className="text-[10px] text-accent font-mono">SVG Active</span>
                   )}
                 </label>
                 <select
                   value={colorBlindness}
                   onChange={(e) => setColorBlindness(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-xs text-white focus:border-teal-400 outline-none transition-all"
+                  className="w-full bg-bgInverse border border-slate-700 rounded-xl p-2.5 text-xs text-textInverse focus:border-accent outline-none transition-all"
                 >
                   {colorBlindnessOptions.map((opt) => (
                     <option key={opt.id} value={opt.id}>
@@ -158,10 +161,10 @@ export default function AccessibilityMenu() {
                 <div className="flex items-center justify-between">
                   <div>
                     <span className="font-bold text-slate-200 flex items-center gap-1.5">
-                      <Sun className="w-3.5 h-3.5 text-amber-400" />
-                      <span>High Contrast / Low-Vision</span>
+                      <Sun className="w-3.5 h-3.5 text-warning" />
+                      <span>High Contrast / Low-Vision {isHighContrast ? '✅ ON' : 'OFF'}</span>
                     </span>
-                    <p className="text-[10px] text-slate-400 mt-0.5">
+                    <p className="text-[10px] text-slate-500 mt-0.5">
                       +20% larger text, pure B&W contrast, 3px focus outline
                     </p>
                   </div>
@@ -170,7 +173,7 @@ export default function AccessibilityMenu() {
                     type="button"
                     onClick={() => setIsHighContrast(!isHighContrast)}
                     className={`w-12 h-6 rounded-full transition-colors relative p-0.5 ${
-                      isHighContrast ? 'bg-teal-500' : 'bg-slate-800'
+                      isHighContrast ? 'bg-accent' : 'bg-bgInverse'
                     }`}
                   >
                     <div
@@ -188,9 +191,9 @@ export default function AccessibilityMenu() {
                   <div>
                     <span className="font-bold text-slate-200 flex items-center gap-1.5">
                       <BookOpen className="w-3.5 h-3.5 text-indigo-400" />
-                      <span>Simplify Text (Cognitive)</span>
+                      <span>Simplify Text (Cognitive) {isSimplifyText ? '✅ ON' : 'OFF'}</span>
                     </span>
-                    <p className="text-[10px] text-slate-400 mt-0.5">
+                    <p className="text-[10px] text-slate-500 mt-0.5">
                       Plain-language labels in selected language
                     </p>
                   </div>
@@ -199,7 +202,7 @@ export default function AccessibilityMenu() {
                     type="button"
                     onClick={() => setIsSimplifyText(!isSimplifyText)}
                     className={`w-12 h-6 rounded-full transition-colors relative p-0.5 ${
-                      isSimplifyText ? 'bg-indigo-500' : 'bg-slate-800'
+                      isSimplifyText ? 'bg-accent' : 'bg-bgInverse'
                     }`}
                   >
                     <div
@@ -210,11 +213,41 @@ export default function AccessibilityMenu() {
                   </button>
                 </div>
               </div>
+
+              {/* 5. Sensory / Calm Mode Toggle */}
+              <div className="pt-2 border-t border-slate-800">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="font-bold text-slate-200 flex items-center gap-1.5">
+                      <span className="w-3.5 h-3.5 rounded-full bg-accent" />
+                      <span>Reduced Sensory / Calm Mode {isCalmMode ? '✅ ON' : 'OFF'}</span>
+                    </span>
+                    <p className="text-[10px] text-slate-500 mt-0.5">
+                      Muted color palette for sensory sensitivities
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setIsCalmMode(!isCalmMode)}
+                    className={`w-12 h-6 rounded-full transition-colors relative p-0.5 ${
+                      isCalmMode ? 'bg-accent' : 'bg-bgInverse'
+                    }`}
+                  >
+                    <div
+                      className={`w-5 h-5 rounded-full bg-white transition-transform ${
+                        isCalmMode ? 'translate-x-6' : 'translate-x-0'
+                      }`}
+                    />
+                  </button>
+                </div>
+              </div>
+  
             </div>
 
             {/* Footer Status & Reset */}
             <div className="border-t border-slate-800 pt-3 mt-4 flex items-center justify-between">
-              <span className="text-[10px] text-slate-400">
+              <span className="text-[10px] text-slate-500">
                 Composable live across pages
               </span>
 
@@ -222,7 +255,7 @@ export default function AccessibilityMenu() {
                 <button
                   type="button"
                   onClick={resetAll}
-                  className="text-[11px] text-red-400 hover:text-red-300 font-bold flex items-center gap-1"
+                  className="text-[11px] text-danger hover:text-danger font-bold flex items-center gap-1"
                 >
                   <RotateCcw className="w-3 h-3" />
                   <span>Reset All</span>

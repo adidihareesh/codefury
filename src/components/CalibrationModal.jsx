@@ -113,19 +113,19 @@ export default function CalibrationModal({ isOpen, onClose, onCalibrationComplet
     >
       {/* Intro Screen (Step 0) */}
       {step === 0 && (
-        <div className="max-w-lg w-full bg-slate-900 border border-teal-500/40 rounded-3xl p-6 sm:p-8 text-white shadow-2xl text-center relative overflow-hidden">
+        <div className="max-w-lg w-full bg-slate-900 border border-accent rounded-3xl p-6 sm:p-8 text-white shadow-2xl text-center relative overflow-hidden">
           <button 
             onClick={onClose}
-            className="absolute top-4 right-4 text-slate-400 hover:text-white p-1 rounded-lg"
+            className="absolute top-4 right-4 text-slate-500 hover:text-white p-1 rounded-lg"
           >
             <X className="w-5 h-5" />
           </button>
 
-          <div className="w-14 h-14 rounded-2xl bg-teal-500/20 border border-teal-500/40 text-teal-300 flex items-center justify-center mx-auto mb-4">
+          <div className="w-14 h-14 rounded-2xl bg-accentBg border border-accent text-accent flex items-center justify-center mx-auto mb-4">
             <Activity className="w-7 h-7 animate-pulse" />
           </div>
 
-          <span className="px-3 py-1 bg-teal-500/20 text-teal-300 text-[10px] font-bold uppercase tracking-wider rounded-full border border-teal-500/30">
+          <span className="px-3 py-1 bg-accentBg text-accent text-[10px] font-bold uppercase tracking-wider rounded-full border border-accent">
             10-Second Personal Baseline Calibration
           </span>
 
@@ -138,11 +138,11 @@ export default function CalibrationModal({ isOpen, onClose, onCalibrationComplet
           </p>
 
           <div className="bg-slate-950/60 border border-slate-800 rounded-2xl p-3.5 mb-6 text-left text-xs text-slate-300 space-y-2">
-            <div className="flex items-center gap-2 text-teal-300 font-semibold">
+            <div className="flex items-center gap-2 text-accent font-semibold">
               <Sparkles className="w-4 h-4" />
               <span>Zero Cryptographic or Biometric Leakage</span>
             </div>
-            <p className="text-[11px] text-slate-400">
+            <p className="text-[11px] text-slate-500">
               Your motor characteristics remain 100% on-device in React state. No personal data is transmitted.
             </p>
           </div>
@@ -150,7 +150,7 @@ export default function CalibrationModal({ isOpen, onClose, onCalibrationComplet
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <button
               onClick={() => setStep(1)}
-              className="px-6 py-3 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-teal-500/20 transition-all active:scale-98"
+              className="px-6 py-3 rounded-xl bg-accent hover:bg-accent text-textInverse font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-accent transition-all active:scale-98"
             >
               <Target className="w-4 h-4" />
               <span>Start Manual 5-Target Tap</span>
@@ -158,7 +158,7 @@ export default function CalibrationModal({ isOpen, onClose, onCalibrationComplet
 
             <button
               onClick={simulateTremorCalibration}
-              className="px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-teal-300 border border-teal-500/30 font-semibold text-xs flex items-center justify-center gap-2 transition-all"
+              className="px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-accent border border-accent font-semibold text-xs flex items-center justify-center gap-2 transition-all"
             >
               <Zap className="w-4 h-4 text-yellow-400" />
               <span>⚡ Auto-Calibrate Tremor Profile (Judge Fast-Track)</span>
@@ -173,16 +173,16 @@ export default function CalibrationModal({ isOpen, onClose, onCalibrationComplet
           {/* Header */}
           <div className="flex justify-between items-center max-w-4xl mx-auto w-full">
             <div className="flex items-center gap-3">
-              <span className="w-3 h-3 rounded-full bg-teal-400 animate-ping"></span>
-              <span className="font-mono text-xs font-bold uppercase tracking-wider text-teal-300">
+              <span className="w-3 h-3 rounded-full bg-accent animate-ping"></span>
+              <span className="font-mono text-xs font-bold uppercase tracking-wider text-accent">
                 Calibrating Target {currentTargetIndex + 1} of 5
               </span>
             </div>
-            <div className="flex items-center gap-2 text-xs text-slate-400">
+            <div className="flex items-center gap-2 text-xs text-slate-500">
               <span>Tap the glowing circular target</span>
               <button 
                 onClick={onClose}
-                className="ml-4 px-2.5 py-1 bg-slate-800 rounded-lg text-slate-400 hover:text-white"
+                className="ml-4 px-2.5 py-1 bg-slate-800 rounded-lg text-slate-500 hover:text-white"
               >
                 Cancel
               </button>
@@ -200,8 +200,8 @@ export default function CalibrationModal({ isOpen, onClose, onCalibrationComplet
                   className="absolute -translate-x-1/2 -translate-y-1/2 transition-all duration-300 animate-in zoom-in-75"
                 >
                   {/* Radar Ripple Effect */}
-                  <div className="absolute inset-0 -m-6 rounded-full bg-teal-400/20 animate-ping pointer-events-none"></div>
-                  <div className="absolute inset-0 -m-12 rounded-full border-2 border-teal-400/30 animate-pulse pointer-events-none"></div>
+                  <div className="absolute inset-0 -m-6 rounded-full bg-accent/20 animate-ping pointer-events-none"></div>
+                  <div className="absolute inset-0 -m-12 rounded-full border-2 border-accent/30 animate-pulse pointer-events-none"></div>
 
                   <button
                     type="button"
@@ -221,23 +221,23 @@ export default function CalibrationModal({ isOpen, onClose, onCalibrationComplet
           <div className="max-w-md mx-auto w-full text-center">
             <div className="w-full bg-slate-800 rounded-full h-2 overflow-hidden mb-2">
               <div 
-                className="bg-teal-400 h-full transition-all duration-300"
+                className="bg-accent h-full transition-all duration-300"
                 style={{ width: `${((currentTargetIndex + 1) / 5) * 100}%` }}
               ></div>
             </div>
-            <p className="text-xs text-slate-400">Natural hand jitter and approach path are actively being sampled.</p>
+            <p className="text-xs text-slate-500">Natural hand jitter and approach path are actively being sampled.</p>
           </div>
         </div>
       )}
 
       {/* Results Screen (Step 6) */}
       {step === 6 && calculatedProfile && (
-        <div className="max-w-lg w-full bg-slate-900 border-2 border-teal-500/60 rounded-3xl p-6 sm:p-8 text-white shadow-2xl animate-in zoom-in-95 duration-200">
-          <div className="w-14 h-14 rounded-2xl bg-teal-500/20 border border-teal-500/40 text-teal-300 flex items-center justify-center mx-auto mb-4">
+        <div className="max-w-lg w-full bg-slate-900 border-2 border-accent rounded-3xl p-6 sm:p-8 text-white shadow-2xl animate-in zoom-in-95 duration-200">
+          <div className="w-14 h-14 rounded-2xl bg-accentBg border border-accent text-accent flex items-center justify-center mx-auto mb-4">
             <ShieldCheck className="w-8 h-8" />
           </div>
 
-          <span className="px-3 py-1 bg-teal-500/20 text-teal-300 text-[10px] font-bold uppercase tracking-wider rounded-full border border-teal-500/30 block w-fit mx-auto">
+          <span className="px-3 py-1 bg-accentBg text-accent text-[10px] font-bold uppercase tracking-wider rounded-full border border-accent block w-fit mx-auto">
             Baseline Calibration Complete
           </span>
 
@@ -250,24 +250,24 @@ export default function CalibrationModal({ isOpen, onClose, onCalibrationComplet
 
           <div className="grid grid-cols-2 gap-3 mb-5 font-mono text-xs">
             <div className="bg-slate-950/70 p-3 rounded-2xl border border-slate-800">
-              <span className="text-[10px] text-slate-400 uppercase font-sans">Baseline Jitter Range</span>
-              <div className="text-base font-bold text-teal-300 mt-1">
+              <span className="text-[10px] text-slate-500 uppercase font-sans">Baseline Jitter Range</span>
+              <div className="text-base font-bold text-accent mt-1">
                 {calculatedProfile.avgJitter} / 100
               </div>
               <span className="text-[10px] text-slate-500 font-sans">{calculatedProfile.tremorProfile}</span>
             </div>
 
             <div className="bg-slate-950/70 p-3 rounded-2xl border border-slate-800">
-              <span className="text-[10px] text-slate-400 uppercase font-sans">Recommended Dwell</span>
-              <div className="text-base font-bold text-teal-300 mt-1">
+              <span className="text-[10px] text-slate-500 uppercase font-sans">Recommended Dwell</span>
+              <div className="text-base font-bold text-accent mt-1">
                 {calculatedProfile.suggestedDwellMs} ms
               </div>
               <span className="text-[10px] text-slate-500 font-sans">Spasm & mis-tap filter</span>
             </div>
           </div>
 
-          <div className="bg-teal-950/40 border border-teal-500/30 rounded-2xl p-3.5 mb-6 text-xs text-teal-200 flex items-center gap-3">
-            <CheckCircle2 className="w-5 h-5 text-teal-400 shrink-0" />
+          <div className="bg-teal-950/40 border border-accent rounded-2xl p-3.5 mb-6 text-xs text-accent flex items-center gap-3">
+            <CheckCircle2 className="w-5 h-5 text-accent shrink-0" />
             <span>
               <strong>Adaptive Accommodations Activated:</strong> Live buttons will automatically expand and dwell-click (500ms hold) is enabled.
             </span>
@@ -278,7 +278,7 @@ export default function CalibrationModal({ isOpen, onClose, onCalibrationComplet
               onCalibrationComplete(calculatedProfile);
               onClose();
             }}
-            className="w-full py-3 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-teal-500/20 transition-all active:scale-98"
+            className="w-full py-3 rounded-xl bg-accent hover:bg-accent text-textInverse font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-accent transition-all active:scale-98"
           >
             <span>Apply Baseline & Activate Adaptive Mode</span>
             <ArrowRight className="w-4 h-4" />

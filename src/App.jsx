@@ -30,7 +30,7 @@ export default function App() {
 
   return (
     <AccessibilityProvider>
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-teal-500 selection:text-white">
+      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-accent selection:text-white">
         {/* Navigation Bar */}
         <Navigation currentRoute={currentRoute} setCurrentRoute={navigateTo} />
 
@@ -46,7 +46,7 @@ export default function App() {
           <footer className="border-t border-slate-800/80 bg-slate-950 py-6 text-center text-xs text-slate-500 font-mono">
             <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
               <span>Accessibility Trust Layer • Solving the Disability-as-Fraud Paradox</span>
-              <span className="text-teal-400">Frontend-Only Real-Time Demo</span>
+              <span className="text-accent">Frontend-Only Real-Time Demo</span>
             </div>
           </footer>
         )}

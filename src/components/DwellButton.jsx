@@ -85,14 +85,14 @@ export default function DwellButton({
       onTouchEnd={cancelHold}
       className={`relative overflow-hidden transition-all duration-200 select-none ${
         isAdaptiveActive
-          ? 'py-4 px-7 text-sm sm:text-base font-bold rounded-2xl shadow-lg ring-2 ring-teal-400/40 hover:ring-teal-400 active:scale-98'
+          ? 'py-5 px-8 text-base sm:text-lg font-extrabold rounded-2xl shadow-lg ring-2 ring-accent/40 hover:ring-accent active:scale-98'
           : 'py-2.5 px-6 text-xs sm:text-sm font-semibold rounded-xl'
       } ${className}`}
     >
       {/* Progress Fill Bar for Dwell Click */}
       {isAdaptiveActive && (
         <div
-          className="absolute inset-0 bg-teal-300/30 transition-all duration-75 pointer-events-none"
+          className="absolute inset-0 bg-accent/30 transition-all duration-75 pointer-events-none"
           style={{ width: `${progress}%` }}
         />
       )}
@@ -101,14 +101,14 @@ export default function DwellButton({
       <span className="relative z-10 flex items-center justify-center gap-2">
         {isTriggered ? (
           <>
-            <Check className="w-5 h-5 text-teal-200 animate-bounce" />
+            <Check className="w-5 h-5 text-accent animate-bounce" />
             <span>Confirmed!</span>
           </>
         ) : (
           <>
             {children}
             {isAdaptiveActive && (
-              <span className="text-[10px] uppercase font-mono tracking-wider px-1.5 py-0.5 rounded bg-black/20 text-teal-200 border border-teal-300/30">
+              <span className="text-[10px] uppercase font-mono tracking-wider px-1.5 py-0.5 rounded bg-black/20 text-white border-white/30">
                 {isHolding ? `${Math.round(progress)}%` : 'Hold 500ms'}
               </span>
             )}

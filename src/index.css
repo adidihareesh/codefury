@@ -3,6 +3,45 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --color-text-primary: #1A1A2E;
+    --color-bg-primary: #FAFAFA;
+    --color-text-inverse: #FFFFFF;
+    --color-bg-inverse: #1A1A2E;
+
+    --color-danger: #E85D04;
+    --color-danger-bg: #FFF3E8;
+    
+    --color-success: #0466C8;
+    --color-success-bg: #E8F1FB;
+    
+    --color-warning: #FFB700;
+    --color-warning-bg: #FFF8E1;
+
+    --color-accent: #0466C8;
+    --color-accent-bg: #E8F1FB;
+  }
+
+  .calm-mode {
+    --color-bg-primary: #F4F1EC;
+    --color-accent: #8D99AE;
+    --color-accent-bg: #E8EBEF;
+    --color-danger: #C97B63;
+    --color-danger-bg: #F4E8E4;
+    --color-success: #6B8F82;
+    --color-success-bg: #E7EFEA;
+    --color-warning: #D4A373;
+    --color-warning-bg: #FAF3E6;
+  }
+
+  body {
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+  }
+}
+
+
+@layer base {
   body {
     @apply bg-slate-950 text-slate-100 antialiased selection:bg-teal-500 selection:text-white;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";

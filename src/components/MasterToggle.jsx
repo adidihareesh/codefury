@@ -9,21 +9,21 @@ export default function MasterToggle({ isTrustLayerEnabled, onToggle }) {
     <div className="w-full max-w-2xl mx-auto my-3">
       <div className={`p-1.5 rounded-3xl transition-all duration-300 border shadow-xl ${
         isTrustLayerEnabled 
-          ? 'bg-gradient-to-r from-teal-950/90 via-slate-900 to-teal-950/90 border-teal-500/50 shadow-teal-500/10 ring-2 ring-teal-400/20' 
-          : 'bg-gradient-to-r from-red-950/90 via-slate-900 to-red-950/90 border-red-500/40 shadow-red-500/10'
+          ? 'bg-bgInverse border-accent shadow-accent ring-2 ring-accent/20' 
+          : 'bg-bgInverse border-danger shadow-danger'
       }`}>
         <div className="flex flex-col sm:flex-row items-center justify-between p-3 sm:p-4 gap-4">
           {/* Status Label & Micro-explanation */}
           <div className="flex items-center gap-3">
             <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-transform duration-300 ${
               isTrustLayerEnabled 
-                ? 'bg-teal-500/20 border border-teal-400/40 text-teal-300 scale-105' 
-                : 'bg-red-500/20 border border-red-400/40 text-red-400'
+                ? 'bg-accent border border-accent/40 text-accent scale-105' 
+                : 'bg-danger border border-danger/40 text-danger'
             }`}>
               {isTrustLayerEnabled ? (
-                <ShieldCheck className="w-7 h-7 text-teal-300 animate-pulse" />
+                <ShieldCheck className="w-7 h-7 text-accent animate-pulse" />
               ) : (
-                <ShieldAlert className="w-7 h-7 text-red-400" />
+                <ShieldAlert className="w-7 h-7 text-danger" />
               )}
             </div>
 
@@ -34,21 +34,21 @@ export default function MasterToggle({ isTrustLayerEnabled, onToggle }) {
                 </span>
                 <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase ${
                   isTrustLayerEnabled 
-                    ? 'bg-teal-400 text-slate-950 shadow-sm' 
-                    : 'bg-red-500 text-white'
+                    ? 'bg-accent text-textInverse shadow-sm' 
+                    : 'bg-danger text-textInverse'
                 }`}>
                   {isTrustLayerEnabled ? 'TRUST LAYER ON' : 'TRUST LAYER OFF'}
                 </span>
               </div>
               
-              <h3 className="text-sm sm:text-base font-extrabold text-white mt-0.5">
+              <h3 className="text-sm sm:text-base font-extrabold text-textInverse mt-0.5">
                 {isTrustLayerEnabled ? (
-                  <span className="text-teal-300">{t('toggleWithTitle')}</span>
+                  <span className="text-accent">{t('toggleWithTitle')}</span>
                 ) : (
-                  <span className="text-red-300">{t('toggleWithoutTitle')}</span>
+                  <span className="text-danger">{t('toggleWithoutTitle')}</span>
                 )}
               </h3>
-              <p className="text-[11px] text-slate-400">
+              <p className="text-[11px] text-slate-500">
                 {isTrustLayerEnabled ? t('toggleWithDesc') : t('toggleWithoutDesc')}
               </p>
             </div>
@@ -63,7 +63,7 @@ export default function MasterToggle({ isTrustLayerEnabled, onToggle }) {
               type="button"
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
                 !isTrustLayerEnabled 
-                  ? 'bg-red-500 text-white shadow-md' 
+                  ? 'bg-danger text-textInverse shadow-md' 
                   : 'text-slate-500 hover:text-slate-300'
               }`}
             >
@@ -73,7 +73,7 @@ export default function MasterToggle({ isTrustLayerEnabled, onToggle }) {
               type="button"
               className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
                 isTrustLayerEnabled 
-                  ? 'bg-teal-500 text-slate-950 shadow-md shadow-teal-500/20' 
+                  ? 'bg-accent text-textInverse shadow-md shadow-accent' 
                   : 'text-slate-500 hover:text-slate-300'
               }`}
             >

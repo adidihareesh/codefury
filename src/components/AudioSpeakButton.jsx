@@ -38,14 +38,14 @@ export default function AudioSpeakButton({ text, label = 'instruction', classNam
       onClick={handleSpeak}
       title={`Listen aloud in ${langNames[language] || 'selected language'} (Text-to-Speech)`}
       aria-label={`Read ${label} aloud`}
-      className={`p-1.5 rounded-lg transition-all duration-200 inline-flex items-center gap-1 text-slate-500 hover:text-teal-600 hover:bg-teal-50 border border-transparent hover:border-teal-200 ${
+      className={`p-1.5 rounded-lg transition-all duration-200 inline-flex items-center gap-1 text-slate-500 hover:text-accent hover:bg-accentBg border border-transparent hover:border-accent ${
         isCurrentlyReadingThis && isSpeaking 
-          ? 'bg-teal-100 text-teal-900 border-teal-400 animate-pulse ring-2 ring-teal-300' 
+          ? 'bg-accentBg text-accent border-accent animate-pulse ring-2 ring-accent' 
           : ''
       } ${className}`}
     >
       {isCurrentlyReadingThis && isSpeaking ? (
-        <Volume2 className="w-3.5 h-3.5 text-teal-700 animate-bounce" />
+        <Volume2 className="w-3.5 h-3.5 text-accent animate-bounce" />
       ) : (
         <Volume2 className="w-3.5 h-3.5" />
       )}

@@ -15,6 +15,7 @@ export function AccessibilityProvider({ children }) {
 
   // Cognitive / Simplify Text Mode: true | false
   const [isSimplifyText, setIsSimplifyText] = useState(false);
+  const [isCalmMode, setIsCalmMode] = useState(false);
 
   // Floating settings drawer state
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -108,6 +109,8 @@ export function AccessibilityProvider({ children }) {
         setIsHighContrast,
         isSimplifyText,
         setIsSimplifyText,
+        isCalmMode,
+        setIsCalmMode,
         isMenuOpen,
         setIsMenuOpen,
         isSpeaking,
@@ -171,7 +174,7 @@ export function AccessibilityProvider({ children }) {
         style={{ filter: getFilterStyle() }}
         className={`min-h-screen transition-all duration-200 ${
           isHighContrast ? 'high-contrast-mode' : ''
-        } ${isSimplifyText ? 'simplify-text-mode' : ''}`}
+        } ${isSimplifyText ? 'simplify-text-mode' : ''} ${isCalmMode ? 'calm-mode' : ''}`}
       >
         {children}
       </div>

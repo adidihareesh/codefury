@@ -304,7 +304,7 @@ export const textStrings = {
 
   // Form Field Labels & Placeholders
   recipientLabel: {
-    en: "Recipient Legal Name",
+    en: "Pay to (UPI ID or Contact)",
     en_simple: "Who are you sending money to?",
     hi: "प्राप्तकर्ता का कानूनी नाम",
     hi_simple: "आप किसे पैसे भेजना चाहते हैं?",
@@ -344,8 +344,8 @@ export const textStrings = {
     ta_simple: "தொகையை உள்ளிடவும் (எ.கா. 50)"
   },
   otpLabel: {
-    en: "6-Digit SMS Security Code (OTP)",
-    en_simple: "Enter the 6-digit code sent to your phone",
+    en: "4-Digit UPI PIN",
+    en_simple: "Enter your 4-digit secret PIN",
     hi: "6-अंकों का SMS सुरक्षा कोड (OTP)",
     hi_simple: "अपने फ़ोन पर आया 6 अंकों का कोड दर्ज करें",
     kn: "6-ಅಂಕಿಯ SMS ಭದ್ರತಾ ಕೋಡ್ (OTP)",

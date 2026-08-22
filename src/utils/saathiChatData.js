@@ -25,16 +25,16 @@ export const saathiDialogs = {
   // Step 3: Confirm Amount & Ask OTP
   askOtp: {
     en: (amt, name) => ({
-      en: `₹${amt} to ${name}, got it. Now I'll send a 6-digit OTP to your mobile phone — type it or speak it when you get it. (Simulated code: 839201)`,
-      hi: `${name} को ₹${amt}, नोट कर लिया। अब आपके फ़ोन पर 6 अंकों का OTP भेजा गया है — कृपया दर्ज करें या बोलें। (कोड: 839201)`,
-      kn: `${name} ಅವರಿಗೆ ₹${amt}, ಸರಿ. ಈಗ ನಿಮ್ಮ ಫೋನ್‌ಗೆ 6 ಅಂಕಿಯ OTP ಕಳುಹಿಸಲಾಗಿದೆ — ದಯವಿಟ್ಟು ಬರೆಯಿರಿ ಅಥವಾ ಮಾತನಾಡಿ. (ಕೋಡ್: 839201)`,
-      ta: `${name} அவர்களுக்கு ₹${amt}, பதிவானது. இப்போது உங்கள் போனுக்கு 6 இலக்க OTP அனுப்பப்பட்டுள்ளது — உள்ளிடவும் அல்லது பேசவும். (குறியீடு: 839201)`
+      en: `Please enter or speak your 4-digit secret UPI PIN to authorize this transfer.`,
+      hi: `इस हस्तांतरण को स्वीकृत करने के लिए कृपया अपना 4 अंकों का गुप्त UPI PIN दर्ज करें या बोलें।`,
+      kn: `ಈ ವರ್ಗಾವಣೆಯನ್ನು ಅಧಿಕೃತಗೊಳಿಸಲು ದಯವಿಟ್ಟು ನಿಮ್ಮ 4 ಅಂಕಿಯ ಗೌಪ್ಯ UPI PIN ಅನ್ನು ನಮೂದಿಸಿ ಅಥವಾ ಮಾತನಾಡಿ.`,
+      ta: `இந்தப் பரிமாற்றத்தை அங்கீகரிக்க உங்கள் 4 இலக்க ரகசிய UPI PIN-ஐ உள்ளிடவும் அல்லது பேசவும்.`
     })
   },
 
-  // Step 4: OTP Verified & Ask Final Summary Confirmation
+  // Step 4: UPI PIN Verified & Ask Final Summary Confirmation
   confirmTransfer: {
-    en: "Perfect! OTP verified. Here is your transfer summary. Review and hold the button to authorize:",
+    en: "Perfect! UPI PIN verified. Here is your transfer summary. Review and hold the button to authorize:",
     hi: "उत्कृष्ट! OTP सत्यापित हो गया है। कृपया विवरण की समीक्षा करें और स्वीकृत करने के लिए बटन दबाएं:",
     kn: "ಉತ್ತಮ! OTP ದೃಢೀಕರಿಸಲಾಗಿದೆ. ವಿವರಗಳನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಅಧಿಕೃತಗೊಳಿಸಲು ಬಟನ್ ಒತ್ತಿಹಿಡಿಯಿರಿ:",
     ta: "அற்புதம்! OTP சரிபார்க்கப்பட்டது. விவரங்களை சரிபார்த்து உறுதிப்படுத்த பொத்தானை அழுத்தவும்:"
@@ -114,10 +114,10 @@ export const saathiDialogs = {
     ta: "பரிந்துரைகள்:"
   },
   uiUseOtpChip: {
-    en: "🔑 Use OTP: 839201",
-    hi: "🔑 OTP उपयोग करें: 839201",
-    kn: "🔑 OTP ಬಳಸಿ: 839201",
-    ta: "🔑 OTP பயன்படுத்தவும்: 839201"
+    en: "🔑 Use PIN: 8392",
+    hi: "🔑 OTP उपयोग करें: 8392",
+    kn: "🔑 OTP ಬಳಸಿ: 8392",
+    ta: "🔑 OTP பயன்படுத்தவும்: 8392"
   },
   uiAuthCardTitle: {
     en: "Transfer Authorization Card",
@@ -126,7 +126,7 @@ export const saathiDialogs = {
     ta: "பரிமாற்ற அங்கீகார அட்டை"
   },
   uiOtpVerifiedBadge: {
-    en: "OTP Verified ✅",
+    en: "UPI PIN Verified ✅",
     hi: "OTP सत्यापित ✅",
     kn: "OTP ದೃಢೀಕರಿಸಲಾಗಿದೆ ✅",
     ta: "OTP சரிபார்க்கப்பட்டது ✅"
@@ -192,10 +192,10 @@ export const saathiDialogs = {
     ta: "தொகையை ரூபாயில் உள்ளிடவும் (எ.கா. 350)..."
   },
   placeholderOtp: {
-    en: "Type or speak 6-digit OTP (e.g. 839201)...",
-    hi: "6 अंकों का OTP लिखें या बोलें (उदा. 839201)...",
-    kn: "6 ಅಂಕಿಯ OTP ಬರೆಯಿರಿ ಅಥವಾ ಮಾತನಾಡಿ (ಉದಾ. 839201)...",
-    ta: "6 இலக்க OTP-ஐ உள்ளிடவும் அல்லது பேசவும் (எ.கா. 839201)..."
+    en: "Type or speak 4-digit UPI PIN (e.g. 8392)...",
+    hi: "4 अंकों का UPI PIN लिखें या बोलें (उदा. 8392)...",
+    kn: "6 ಅಂಕಿಯ OTP ಬರೆಯಿರಿ ಅಥವಾ ಮಾತನಾಡಿ (ಉದಾ. 8392)...",
+    ta: "4 இலக்க UPI PIN-ஐ உள்ளிடவும் அல்லது பேசவும் (எ.கா. 8392)..."
   },
   placeholderReady: {
     en: "Transfer is ready to authorize above...",

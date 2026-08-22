@@ -8,8 +8,11 @@ import TokenCard from '../components/TokenCard';
 import VoiceInputButton from '../components/VoiceInputButton';
 import AudioSpeakButton from '../components/AudioSpeakButton';
 import SaathiChatAssistant from '../components/SaathiChatAssistant';
+import ErrorBoundary from '../components/ErrorBoundary';
+import OcrUploader from '../components/OcrUploader';
 import { 
   ShieldCheck, 
+  Shield, 
   ShieldAlert, 
   Lock, 
   Zap, 
@@ -60,6 +63,10 @@ export default function TrustLayer({ setCurrentRoute }) {
   // Authentication State
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authMode, setAuthMode] = useState('login');
+  const [authFormName, setAuthFormName] = useState('');
+  const [authFormDob, setAuthFormDob] = useState('');
+  const [authFormPhone, setAuthFormPhone] = useState('');
+  const [ocrSuccessNotice, setOcrSuccessNotice] = useState(false);
   const [accounts, setAccounts] = useState(() => {
     try {
       const saved = localStorage.getItem('trustLayerAccounts');
@@ -70,7 +77,9 @@ export default function TrustLayer({ setCurrentRoute }) {
     return [{ 
       username: 'demo', 
       password: 'password',
-      prefs: { language: 'en', isHighContrast: false, isSimplifyText: false, colorBlindness: 'none' }
+      prefs: { language: 'en', isHighContrast: false, isSimplifyText: false, colorBlindness: 'none' },
+      upiPin: '1234',
+      balance: 124450.80
     }];
   });
   
@@ -81,6 +90,7 @@ export default function TrustLayer({ setCurrentRoute }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [authFormUser, setAuthFormUser] = useState('');
   const [authFormPass, setAuthFormPass] = useState('');
+  const [authFormPin, setAuthFormPin] = useState('');
   const [authError, setAuthError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
@@ -93,6 +103,8 @@ export default function TrustLayer({ setCurrentRoute }) {
   const [otpRetries, setOtpRetries] = useState(0);
   const [otpErrorMessage, setOtpErrorMessage] = useState('');
   const [transferSuccess, setTransferSuccess] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [showPinPad, setShowPinPad] = useState(false);
 
   // Real-Time Live Jitter & Tremor Likelihood Tracking State
   const [liveJitterMetrics, setLiveJitterMetrics] = useState({
@@ -106,9 +118,9 @@ export default function TrustLayer({ setCurrentRoute }) {
   // 1. & 2. ESCALATING TIME BUDGET STATE (Capped at 5:00 / 300s Hard Max)
   const HARD_CAP_SECONDS = 300; // 5 minutes absolute maximum
   const [tremorSignaturesCount, setTremorSignaturesCount] = useState(0);
-  const [allocatedBudgetSeconds, setAllocatedBudgetSeconds] = useState(60); // 60s base
+  const [allocatedBudgetSeconds, setAllocatedBudgetSeconds] = useState(180); // 180s base
   const [sessionTimeElapsed, setSessionTimeElapsed] = useState(0);
-  const [timeRemaining, setTimeRemaining] = useState(60);
+  const [timeRemaining, setTimeRemaining] = useState(180);
   
   // Extension & Graceful Timeout State
   const [isGracefulTimeout, setIsGracefulTimeout] = useState(false);
@@ -156,9 +168,9 @@ export default function TrustLayer({ setCurrentRoute }) {
   }, [userBaseline]);
 
   const calculateEscalatedBudget = (signatures) => {
-    // Extends gap from 1 min (60s) directly to 5 mins (300s) if >2 tremors are detected (3rd signature)
+    // Extends gap from 3 mins (180s) directly to 5 mins (300s) if >2 tremors are detected (3rd signature)
     if (signatures > 2) return HARD_CAP_SECONDS;
-    return 60; // Base 1 minute
+    return 180; // Base 3 minutes
   };
 
   const registerTremorSignature = () => {
@@ -180,7 +192,7 @@ export default function TrustLayer({ setCurrentRoute }) {
       if (newCount > 2) {
         setTimeRemaining((prevRemaining) => {
           const finalRemaining = Math.max(prevRemaining, HARD_CAP_SECONDS - sessionTimeElapsed);
-          return Math.max(60, finalRemaining);
+          return Math.max(180, finalRemaining);
         });
 
         setShowExtensionPopup(true);
@@ -256,7 +268,7 @@ export default function TrustLayer({ setCurrentRoute }) {
 
       // Advance remaining time for the current allocated budget
       setTimeRemaining((prevRemaining) => {
-        // Without Trust Layer: expires in 60s and flags as fraud
+        // Without Trust Layer: expires in 180s and flags as fraud
         if (!isTrustLayerEnabled && prevRemaining <= 1) {
           clearInterval(timerIntervalRef.current);
           const finalScore = 0.38;
@@ -314,7 +326,9 @@ export default function TrustLayer({ setCurrentRoute }) {
       return;
     }
 
-    if (otp !== actualOtp) {
+    const currentUserObj = accounts.find(acc => acc.username === currentUser);
+    const expectedPin = currentUserObj ? currentUserObj.upiPin : '1234';
+    if (otp !== expectedPin) {
       const newRetries = otpRetries + 1;
       setOtpRetries(newRetries);
       const updatedScore = Math.max(0.1, recaptchaScore - 0.15);
@@ -333,6 +347,17 @@ export default function TrustLayer({ setCurrentRoute }) {
 
     setTransferSuccess(true);
     if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
+    
+    // Deduct amount from balance
+    const transferAmount = parseFloat(amount.toString().replace(/,/g, '')) || 0;
+    setAccounts(prevAccounts => 
+      prevAccounts.map(acc => {
+        if (acc.username === currentUser) {
+          return { ...acc, balance: Math.max(0, (acc.balance || 124450.80) - transferAmount) };
+        }
+        return acc;
+      })
+    );
   };
 
   const triggerSimulateTremor = () => {
@@ -418,12 +443,14 @@ export default function TrustLayer({ setCurrentRoute }) {
     setOtp('');
     setOtpRetries(0);
     setOtpErrorMessage('');
-    setTimeRemaining(60);
+    setTimeRemaining(180);
     setSessionTimeElapsed(0);
     setTremorSignaturesCount(0);
-    setAllocatedBudgetSeconds(60);
+    setAllocatedBudgetSeconds(180);
     setSimulationMode(null);
     setTransferSuccess(false);
+    setShowConfirmation(false);
+    setShowPinPad(false);
     setExtensionNotification(null);
     setShowExtensionPopup(false);
     setTrustVerificationNotice(null);
@@ -445,18 +472,33 @@ export default function TrustLayer({ setCurrentRoute }) {
 
   const capProgressPct = tremorSignaturesCount > 0 
     ? Math.min(100, (sessionTimeElapsed / HARD_CAP_SECONDS) * 100)
-    : Math.min(100, ((60 - timeRemaining) / 60) * 100);
+    : Math.min(100, ((180 - timeRemaining) / 180) * 100);
+
+  const handleProceed = (e) => {
+    e.preventDefault();
+    setShowConfirmation(true);
+  };
 
   const handleAuthSubmit = (e) => {
     e.preventDefault();
     setAuthError('');
+    setOcrSuccessNotice(false);
     if (authMode === 'signup') {
       if (accounts.some(acc => acc.username === authFormUser)) {
         setAuthError(t('authErrorExists') || 'Username already exists. Please choose another.');
         return;
       }
       const newPrefs = { language, isHighContrast, isSimplifyText, colorBlindness };
-      setAccounts([...accounts, { username: authFormUser, password: authFormPass, prefs: newPrefs }]);
+      setAccounts([...accounts, { 
+        username: authFormUser, 
+        password: authFormPass, 
+        upiPin: authFormPin || '1234', 
+        name: authFormName,
+        dob: authFormDob,
+        phone: authFormPhone,
+        balance: Math.floor(Math.random() * (200000 - 50000 + 1) + 50000) + 0.80,
+        prefs: newPrefs 
+      }]);
       setCurrentUser(authFormUser);
       setIsAuthenticated(true);
     } else {
@@ -557,6 +599,76 @@ export default function TrustLayer({ setCurrentRoute }) {
                 </button>
               </div>
             </div>
+            {authMode === 'signup' && (
+              <div className="space-y-4">
+                <OcrUploader 
+                  onExtract={(data) => {
+                    if (data.name) setAuthFormName(data.name);
+                    if (data.dob) setAuthFormDob(data.dob);
+                    if (data.aadhaar) setAuthFormPhone(data.aadhaar); // map to a field for demo
+                    setOcrSuccessNotice("We read this from your uploaded document — please check it's correct. You can edit any field below.");
+                  }}
+                  onVoiceFallback={() => {
+                     // Hand off to voice flow logic or alert for demo
+                     alert("Voice Fallback Activated: 'Hi, I can help you fill this out. What is your name?'");
+                  }}
+                />
+
+                {ocrSuccessNotice && (
+                  <div className="bg-emerald-50 border-2 border-emerald-200 p-3 rounded-xl mb-4 text-xs font-bold text-emerald-700 flex items-start gap-2 text-left">
+                    <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
+                    <p>{ocrSuccessNotice}</p>
+                  </div>
+                )}
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Full Name</label>
+                  <input 
+                    type="text" 
+                    value={authFormName}
+                    onChange={(e) => setAuthFormName(e.target.value)}
+                    className="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-900 focus:ring-2 focus:ring-teal-500 outline-none transition-all" 
+                    placeholder="e.g. Rahul Sharma" 
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Date of Birth</label>
+                  <input 
+                    type="text" 
+                    value={authFormDob}
+                    onChange={(e) => setAuthFormDob(e.target.value)}
+                    className="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-900 focus:ring-2 focus:ring-teal-500 outline-none transition-all" 
+                    placeholder="DD/MM/YYYY" 
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">ID Number / Phone</label>
+                  <input 
+                    type="text" 
+                    value={authFormPhone}
+                    onChange={(e) => setAuthFormPhone(e.target.value)}
+                    className="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-900 focus:ring-2 focus:ring-teal-500 outline-none transition-all" 
+                    placeholder="e.g. 1234 5678 9012" 
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Create 4-Digit UPI PIN</label>
+                  <input 
+                    type="password" 
+                    maxLength={4}
+                    value={authFormPin}
+                    onChange={(e) => setAuthFormPin(e.target.value.replace(/\D/g, ''))}
+                    className="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm text-slate-900 font-mono font-bold tracking-widest focus:ring-2 focus:ring-teal-500 outline-none transition-all" 
+                    placeholder="••••" 
+                    required
+                  />
+                </div>
+              </div>
+            )}
             <button type="submit" className="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 rounded-xl transition-all shadow-md mt-6">
               {authMode === 'login' ? t('loginButton') : (t('signupButton') || 'Create Account')}
             </button>
@@ -640,6 +752,7 @@ export default function TrustLayer({ setCurrentRoute }) {
             setCurrentUser(null);
             setAuthFormUser('');
             setAuthFormPass('');
+            setAuthFormPin('');
           }}
           className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-2 rounded-xl text-xs font-bold transition-all border border-slate-700"
         >
@@ -651,15 +764,9 @@ export default function TrustLayer({ setCurrentRoute }) {
       {/* Live Status Captions & 5:00 Cap Progress Meter */}
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-3 mb-4 shadow-md text-xs font-mono">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-2.5">
-          {/* Signature Counter Badge */}
-          <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-xl border transition-all duration-300 ${
-            counterPulse ? 'scale-110 bg-teal-500 text-slate-950 border-white' : 'bg-slate-950 text-teal-300 border-slate-800'
-          }`}>
-            <Activity className="w-3.5 h-3.5 text-teal-400" />
-            <span>{t('signaturesLogged')}: <strong className="text-white text-sm">{tremorSignaturesCount}</strong></span>
-          </div>
+          
 
-          {/* Running Time Budget Display (1:00 Base unless Tremor is simulated) */}
+          {/* Running Time Budget Display (3:00 Base unless Tremor is simulated) */}
           <div className="flex items-center gap-2 text-slate-300 font-sans text-xs">
             <Timer className="w-4 h-4 text-teal-400" />
             <span>
@@ -669,7 +776,7 @@ export default function TrustLayer({ setCurrentRoute }) {
                 </>
               ) : (
                 <>
-                  Session Timeout: <strong className="text-teal-300 font-bold font-mono">{formatTime(timeRemaining)}</strong> / <span className="text-slate-400 font-semibold font-mono">1:00 Base</span>
+                  Session Timeout: <strong className="text-teal-300 font-bold font-mono">{formatTime(timeRemaining)}</strong> / <span className="text-slate-400 font-semibold font-mono">3:00 Base</span>
                 </>
               )}
             </span>
@@ -680,10 +787,10 @@ export default function TrustLayer({ setCurrentRoute }) {
             <span className={`px-2 py-0.5 rounded text-[11px] font-bold ${
               recaptchaScore >= 0.50 ? 'bg-teal-900/60 text-teal-300' : 'bg-red-900/60 text-red-300'
             }`}>
-              reCAPTCHA: {recaptchaScore.toFixed(2)}
+              {recaptchaScore >= 0.50 ? '✅ SAFE: ' : '🚫 FLAGGED: '} reCAPTCHA {recaptchaScore.toFixed(2)}
             </span>
             <span className="text-slate-400 text-[11px]">
-              {liveJitterMetrics.tremorLikelihood}% Jitter
+              {liveJitterMetrics.tremorLikelihood >= 60 ? '⚠️ HIGH: ' : '✨ CALM: '}{liveJitterMetrics.tremorLikelihood >= 60 ? '⚠️ ' : '✅ '}{liveJitterMetrics.tremorLikelihood}% Jitter
             </span>
           </div>
         </div>
@@ -693,10 +800,10 @@ export default function TrustLayer({ setCurrentRoute }) {
           <div 
             className={`h-full rounded-full transition-all duration-500 ${
               capProgressPct >= 80 
-                ? 'bg-gradient-to-r from-amber-500 to-red-500 animate-pulse' 
+                ? 'bg-gradient-to-r from-warning to-danger animate-pulse' 
                 : capProgressPct >= 50 
-                ? 'bg-gradient-to-r from-teal-400 to-amber-400' 
-                : 'bg-gradient-to-r from-teal-500 to-emerald-400'
+                ? 'bg-gradient-to-r from-success to-warning' 
+                : 'bg-gradient-to-r from-accent to-success'
             }`}
             style={{ width: `${capProgressPct}%` }}
           />
@@ -705,7 +812,7 @@ export default function TrustLayer({ setCurrentRoute }) {
 
       {/* Auto Extension Notification */}
       {extensionNotification && (
-        <div className="bg-teal-950/90 border-2 border-teal-400 text-white rounded-2xl p-3 mb-4 shadow-xl flex items-center justify-between gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
+        <div className="bg-bgInverse border-2 border-teal-400 text-white rounded-2xl p-3 mb-4 shadow-xl flex items-center justify-between gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-xl bg-teal-500/20 text-teal-300 flex items-center justify-center shrink-0">
               <Clock className="w-4 h-4 text-teal-300 animate-spin" />
@@ -725,7 +832,7 @@ export default function TrustLayer({ setCurrentRoute }) {
 
       {/* Positive Verification Banner */}
       {isTrustLayerEnabled && trustVerificationNotice && !isLocked && !isGracefulTimeout && (
-        <div className="bg-emerald-950/90 border-2 border-emerald-400 text-white rounded-2xl p-3.5 mb-5 shadow-lg flex items-center justify-between gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
+        <div className="bg-bgInverse border-2 border-emerald-400 text-white rounded-2xl p-3.5 mb-5 shadow-lg flex items-center justify-between gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center shrink-0">
               <ShieldCheck className="w-5 h-5" />
@@ -753,12 +860,12 @@ export default function TrustLayer({ setCurrentRoute }) {
         {/* Left Column (4 cols) */}
         <div className="lg:col-span-4 space-y-6">
           {/* Account Balance Card */}
-          <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-teal-950 text-white rounded-3xl p-6 shadow-xl border border-slate-700/60 relative overflow-hidden">
+          <div className="bg-bgInverse text-white rounded-3xl p-6 shadow-xl border border-slate-700/60 relative overflow-hidden">
             <div className="flex justify-between items-start mb-6">
               <div>
                 <span className="text-xs font-semibold text-slate-400 tracking-wider uppercase">{t('totalAvailableBalance')}</span>
                 <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mt-1">
-                  ₹1,24,450<span className="text-teal-400 text-2xl font-semibold">.80</span>
+                  ₹{Math.floor((accounts.find(a => a.username === currentUser)?.balance || 124450.80)).toLocaleString('en-IN')}<span className="text-teal-400 text-2xl font-semibold">{((accounts.find(a => a.username === currentUser)?.balance || 124450.80) % 1).toFixed(2).substring(1)}</span>
                 </div>
               </div>
               <div className="w-10 h-10 rounded-2xl bg-teal-500/20 border border-teal-500/40 flex items-center justify-center text-teal-300 font-bold font-sans text-xl">
@@ -766,10 +873,7 @@ export default function TrustLayer({ setCurrentRoute }) {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 text-xs font-medium text-teal-300 bg-teal-900/40 border border-teal-500/30 rounded-xl px-3 py-2 w-fit mb-6">
-              <TrendingUp className="w-3.5 h-3.5" />
-              <span>{t('yieldEarned')}</span>
-            </div>
+            
 
             <div className="border-t border-slate-700/80 pt-4 flex justify-between text-xs text-slate-400">
               <div>
@@ -808,25 +912,25 @@ export default function TrustLayer({ setCurrentRoute }) {
               <button
                 type="button"
                 onClick={() => setTransferViewMode('FORM')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 font-sans ${
+                className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-1.5 font-sans ${
                   transferViewMode === 'FORM'
                     ? 'bg-teal-500 text-slate-950 shadow-md font-extrabold'
-                    : 'text-slate-400 hover:text-white'
+                    : 'text-white hover:text-slate-200'
                 }`}
               >
-                <FileText className="w-3.5 h-3.5" />
+                <FileText className="w-4 h-4" />
                 <span>Classic Form</span>
               </button>
               <button
                 type="button"
                 onClick={() => setTransferViewMode('CHAT')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 font-sans ${
+                className={`px-6 py-3 rounded-xl text-sm font-extrabold transition-all flex items-center gap-2 font-sans ${
                   transferViewMode === 'CHAT'
                     ? 'bg-teal-500 text-slate-950 shadow-md font-extrabold'
-                    : 'text-slate-400 hover:text-white'
+                    : 'text-white hover:text-slate-200'
                 }`}
               >
-                <Bot className="w-3.5 h-3.5 text-teal-400" />
+                <Bot className="w-4 h-4" />
                 <span>Saathi AI Chat</span>
               </button>
             </div>
@@ -870,7 +974,7 @@ export default function TrustLayer({ setCurrentRoute }) {
                   <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight mb-2">
                     {tremorSignaturesCount > 0 
                       ? t('gracefulTimeoutHeading') 
-                      : '1-Minute Base Session Expired'}
+                      : '3-Minute Base Session Expired'}
                   </h2>
 
                   <p className="text-xs text-slate-300 leading-relaxed mb-4">
@@ -882,7 +986,7 @@ export default function TrustLayer({ setCurrentRoute }) {
                   <div className="border-t border-slate-800 pt-4 flex flex-wrap justify-between items-center gap-3">
                     <span className="text-[11px] text-slate-400">Normal Security Protocol • Not Fraud</span>
                     <button
-                      onClick={() => { handleReset(); setIsAuthenticated(false); setCurrentUser(null); setAuthFormUser(''); setAuthFormPass(''); }}
+                      onClick={() => { handleReset(); setIsAuthenticated(false); setCurrentUser(null); setAuthFormUser(''); setAuthFormPass(''); setAuthFormPin(''); }}
                       className="px-5 py-2.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-lg transition-all"
                     >
                       <RefreshCw className="w-3.5 h-3.5" />
@@ -905,7 +1009,7 @@ export default function TrustLayer({ setCurrentRoute }) {
                     {t('fraudLockHeading')}
                   </h2>
 
-                  <div className="bg-red-950/50 border border-red-800/80 rounded-2xl p-3.5 my-3.5 text-xs font-mono text-red-200">
+                  <div className="bg-dangerBg border border-red-800/80 rounded-2xl p-3.5 my-3.5 text-xs font-mono text-red-200">
                     <p className="text-white text-sm font-bold">{lockReason || t('fraudLockMessage')}</p>
                   </div>
 
@@ -913,7 +1017,7 @@ export default function TrustLayer({ setCurrentRoute }) {
 
 
                     <button
-                      onClick={() => { handleReset(); setIsAuthenticated(false); setCurrentUser(null); setAuthFormUser(''); setAuthFormPass(''); }}
+                      onClick={() => { handleReset(); setIsAuthenticated(false); setCurrentUser(null); setAuthFormUser(''); setAuthFormPass(''); setAuthFormPin(''); }}
                       className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs"
                     >
                       Reset
@@ -979,194 +1083,200 @@ export default function TrustLayer({ setCurrentRoute }) {
                   </div>
                 </div>
 
-                <form onSubmit={handleTransfer} className="space-y-6">
-                  {/* Recipient Name Field with Voice-to-Text & Audio TTS */}
-                  <div>
-                    <div className="flex justify-between items-center mb-2">
-                      <label className={`block font-bold text-slate-700 flex items-center gap-1.5 ${isAdaptiveActive && isTrustLayerEnabled ? 'text-sm' : 'text-xs'}`}>
-                        <span>{t('recipientLabel')}</span>
-                        <span className="text-red-500">*</span>
-                        <AudioSpeakButton text={t('recipientLabel')} label="Recipient Name" />
-                      </label>
-                      <span className="text-[11px] text-teal-700 font-medium flex items-center gap-1">
-                        <Mic className="w-3 h-3 text-teal-600" /> {t('voiceAssist')}
-                      </span>
-                    </div>
-                    
-                    <div className="relative flex items-center gap-2">
-                      <div className="relative flex-1">
-                        <User className={`text-slate-400 absolute left-4 ${isAdaptiveActive && isTrustLayerEnabled ? 'top-4 w-5 h-5' : 'top-3 w-4 h-4'}`} />
-                        <input
-                          type="text"
-                          required
-                          value={recipient}
-                          onChange={(e) => setRecipient(e.target.value)}
-                          placeholder={t('recipientPlaceholder')}
-                          className={`w-full pr-4 bg-slate-50 border border-slate-200 rounded-2xl font-medium text-slate-900 focus:bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all ${
-                            isAdaptiveActive && isTrustLayerEnabled ? 'py-3.5 pl-12 text-base' : 'py-2.5 pl-10 text-xs sm:text-sm'
-                          }`}
-                        />
-                      </div>
+                {!showConfirmation && !showPinPad && !transferSuccess && (
+  <form onSubmit={handleProceed} className="space-y-6 animate-in fade-in zoom-in-95 duration-300">
+    <div className="flex flex-col items-center justify-center pt-4 mb-4">
+      <div className="w-16 h-16 bg-slate-100 border border-slate-200 rounded-full flex items-center justify-center mb-3 shadow-inner">
+        <User className="w-8 h-8 text-slate-400" />
+      </div>
+      <label className={`block font-bold text-slate-700 text-center flex flex-col items-center gap-1.5 ${isAdaptiveActive && isTrustLayerEnabled ? 'text-sm' : 'text-xs'}`}>
+        <div className="flex items-center gap-2">
+          <span>{t('recipientLabel')}</span>
+          <AudioSpeakButton text={t('recipientLabel')} label="Recipient Name" />
+        </div>
+      </label>
+      <div className="flex items-center gap-3 mt-3 w-full max-w-sm border-b-2 border-slate-300 focus-within:border-teal-500 transition-all">
+        <input
+          type="text"
+          required
+          value={recipient}
+          onChange={(e) => setRecipient(e.target.value)}
+          placeholder="Name, UPI ID or Number"
+          className={`flex-1 text-center bg-transparent font-semibold text-slate-900 outline-none placeholder-slate-400 ${
+            isAdaptiveActive && isTrustLayerEnabled ? 'py-3 text-2xl' : 'py-2 text-xl'
+          }`}
+        />
+        <div className="shrink-0 mb-1">
+          <VoiceInputButton
+            onTranscript={(text) => setRecipient(text)}
+            fieldLabel={t('recipientLabel')}
+            className={isAdaptiveActive && isTrustLayerEnabled ? 'py-2 px-2 rounded-xl' : 'py-1.5 px-1.5 rounded-lg'}
+          />
+        </div>
+      </div>
+    </div>
 
-                      <VoiceInputButton
-                        onTranscript={(text) => setRecipient(text)}
-                        fieldLabel={t('recipientLabel')}
-                        className={isAdaptiveActive && isTrustLayerEnabled ? 'py-3.5 px-3 rounded-2xl' : 'py-2.5 px-3 rounded-xl'}
-                      />
-                    </div>
-                  </div>
+    <div className="flex flex-col items-center justify-center mb-6">
+      <div className="flex items-center justify-center gap-4 mt-4 w-full">
+        <div className="flex items-center bg-slate-50 border border-slate-200 rounded-3xl px-6 py-2 shadow-sm focus-within:border-teal-500 focus-within:ring-2 focus-within:ring-teal-500/20 transition-all">
+          <span className={`text-slate-900 font-extrabold font-sans pr-2 ${isAdaptiveActive && isTrustLayerEnabled ? 'text-5xl' : 'text-4xl'}`}>₹</span>
+          <input
+            type="number"
+            step="0.01"
+            min="1"
+            max="120000"
+            required
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            placeholder="0"
+            className={`bg-transparent font-mono font-extrabold text-slate-900 w-[180px] outline-none transition-all placeholder-slate-300 ${
+              isAdaptiveActive && isTrustLayerEnabled ? 'text-5xl' : 'text-4xl'
+            }`}
+          />
+        </div>
+        <div className="shrink-0">
+          <VoiceInputButton
+            onTranscript={(amt) => setAmount(amt)}
+            fieldLabel={t('amountLabel')}
+            isNumeric={true}
+            presetSpoken="350"
+            className={isAdaptiveActive && isTrustLayerEnabled ? 'py-4 px-4 rounded-2xl shadow-sm' : 'py-3 px-3 rounded-xl shadow-sm'}
+          />
+        </div>
+      </div>
 
-                  {/* Transfer Amount Field with Voice-to-Text & Audio TTS */}
-                  <div>
-                    <div className="flex justify-between items-center mb-2">
-                      <label className={`block font-bold text-slate-700 flex items-center gap-1.5 ${isAdaptiveActive && isTrustLayerEnabled ? 'text-sm' : 'text-xs'}`}>
-                        <span>{t('amountLabel')}</span>
-                        <span className="text-red-500">*</span>
-                        <AudioSpeakButton text={t('amountLabel')} label="Transfer Amount" />
-                      </label>
-                      <span className="text-[11px] text-teal-700 font-medium flex items-center gap-1">
-                        <Mic className="w-3 h-3 text-teal-600" /> {t('voiceAssist')}
-                      </span>
-                    </div>
+      <div className="mt-6 w-full max-w-sm">
+        <div className="grid grid-cols-4 gap-2">
+          {['50', '100', '250', '500'].map((chip) => (
+            <button
+              key={chip}
+              type="button"
+              onClick={() => setAmount(chip)}
+              className={`py-2 px-1 rounded-2xl font-mono font-bold text-xs border-2 transition-all shadow-sm ${
+                amount === chip 
+                  ? 'bg-slate-900 text-white border-slate-800' 
+                  : 'bg-white text-slate-600 border-slate-200 hover:border-slate-400'
+              }`}
+            >
+              ₹{chip}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
 
-                    <div className="relative flex items-center gap-2">
-                      <div className="relative flex-1">
-                        <span className={`text-slate-500 font-bold font-sans absolute left-4 ${isAdaptiveActive && isTrustLayerEnabled ? 'top-3.5 text-xl' : 'top-2.5 text-base'}`}>₹</span>
-                        <input
-                          type="number"
-                          step="0.01"
-                          min="1"
-                          max="120000"
-                          required
-                          value={amount}
-                          onChange={(e) => setAmount(e.target.value)}
-                          placeholder={t('amountPlaceholder')}
-                          className={`w-full pr-4 bg-slate-50 border border-slate-200 rounded-2xl font-mono font-bold text-slate-900 focus:bg-white focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all ${
-                            isAdaptiveActive && isTrustLayerEnabled ? 'py-3.5 pl-12 text-lg' : 'py-2.5 pl-10 text-xs sm:text-sm'
-                          }`}
-                        />
-                      </div>
+    <div className="pt-4 w-full flex flex-col items-center">
+      <DwellButton
+        type="submit"
+        isAdaptiveActive={isAdaptiveActive && isTrustLayerEnabled}
+        dwellTimeMs={userBaseline?.suggestedDwellMs || 500}
+        className="w-full max-w-sm bg-teal-600 hover:bg-teal-700 text-white shadow-lg text-base py-4 rounded-3xl font-bold flex justify-center items-center"
+      >
+        <span>Proceed to Pay</span>
+      </DwellButton>
+      <div className="mt-4 text-[10px] text-slate-400 font-semibold uppercase tracking-wider flex items-center gap-1">
+        <Shield className="w-3 h-3" /> Powered by UPI
+      </div>
+    </div>
+  </form>
+)}
 
-                      <VoiceInputButton
-                        onTranscript={(amt) => setAmount(amt)}
-                        fieldLabel={t('amountLabel')}
-                        isNumeric={true}
-                        presetSpoken="350.00"
-                        className={isAdaptiveActive && isTrustLayerEnabled ? 'py-3.5 px-3 rounded-2xl' : 'py-2.5 px-3 rounded-xl'}
-                      />
-                    </div>
+{showConfirmation && !showPinPad && !transferSuccess && (
+  <div className="space-y-6 animate-in slide-in-from-right-4 duration-300 flex flex-col items-center text-center mt-12 pb-12">
+    <div className="w-20 h-20 bg-teal-50 border border-teal-100 rounded-full flex items-center justify-center mb-2 shadow-inner">
+      <User className="w-10 h-10 text-teal-600" />
+    </div>
+    <h3 className="text-xl text-slate-500 font-medium">Paying</h3>
+    <h2 className="text-3xl font-bold text-slate-900 capitalize">{recipient}</h2>
+    <div className="text-5xl font-mono font-extrabold text-slate-900 my-4">₹{amount}</div>
+    
+    <div className="flex gap-4 w-full max-w-xs mt-8">
+      <button 
+        onClick={() => setShowConfirmation(false)} 
+        className="flex-1 py-3 rounded-2xl border-2 border-slate-200 text-slate-600 font-bold hover:bg-slate-50"
+      >
+        Cancel
+      </button>
+      <DwellButton
+        onClick={() => { setShowConfirmation(false); setShowPinPad(true); }}
+        isAdaptiveActive={isAdaptiveActive && isTrustLayerEnabled}
+        dwellTimeMs={userBaseline?.suggestedDwellMs || 500}
+        className="flex-1 py-3 rounded-2xl bg-teal-600 text-white font-bold hover:bg-teal-700 shadow-lg flex justify-center items-center"
+      >
+        Confirm
+      </DwellButton>
+    </div>
+    <div className="mt-6 text-[10px] text-slate-400 font-semibold uppercase tracking-wider flex items-center gap-1">
+      <Shield className="w-3 h-3" /> Powered by UPI
+    </div>
+  </div>
+)}
 
-                    {/* Prominent Quick Amount Preset Buttons */}
-                    <div className="mt-3">
-                      <span className="text-[11px] font-bold text-slate-700 block mb-1.5 flex items-center gap-1">
-                        <span className="font-bold text-teal-600 font-sans">₹</span>
-                        <span>Quick Amount Presets:</span>
-                      </span>
-                      <div className="grid grid-cols-4 gap-2">
-                        {['50', '100', '250', '500'].map((chip) => (
-                          <button
-                            key={chip}
-                            type="button"
-                            onClick={() => setAmount(chip)}
-                            className={`py-2.5 px-3 rounded-2xl font-mono font-extrabold text-xs sm:text-sm border-2 transition-all flex items-center justify-center gap-1 shadow-sm active:scale-95 ${
-                              amount === chip 
-                                ? 'bg-teal-600 text-white border-teal-700 shadow-md ring-2 ring-teal-400/40' 
-                                : 'bg-teal-50/80 hover:bg-teal-100 text-teal-950 border-teal-300 hover:border-teal-500'
-                            }`}
-                          >
-                            <span className="text-teal-600 font-sans font-bold">+₹</span>
-                            <span>{chip}</span>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
+{showPinPad && !transferSuccess && (
+  <div className="space-y-6 animate-in slide-in-from-right-4 duration-300 flex flex-col items-center mt-8 pb-12">
+    <h2 className="text-lg font-bold text-slate-700 mb-2">Enter 4-Digit UPI PIN</h2>
+    <div className="flex gap-4 justify-center mb-8">
+      {[...Array(4)].map((_, i) => (
+        <div key={i} className={`w-6 h-6 rounded-full border-2 ${otp.length > i ? 'bg-slate-900 border-slate-900' : 'bg-transparent border-slate-300'}`}></div>
+      ))}
+    </div>
 
-                  {/* OTP Verification Field with Voice-to-Text & Audio TTS */}
-                  <div className={`bg-slate-50 border border-slate-200 rounded-3xl space-y-3 transition-all ${
-                    isAdaptiveActive && isTrustLayerEnabled ? 'p-6 ring-1 ring-teal-500/30' : 'p-4'
-                  }`}>
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <div className="flex items-center gap-1.5">
-                        <Smartphone className="w-4 h-4 text-teal-600" />
-                        <span className="text-xs font-bold text-slate-800">{t('otpLabel')}</span>
-                        <AudioSpeakButton text={`${t('otpLabel')}. ${t('smsSimulatedNotice')} ${actualOtp}`} label="OTP Instruction" />
-                      </div>
-                      <div className="text-[11px] text-slate-500 flex items-center gap-2">
-                        <span>{t('smsSimulatedNotice')} <strong className="font-mono text-sm bg-white px-2 py-0.5 rounded border border-teal-300 text-teal-900">{actualOtp}</strong></span>
-                        <span className="text-[11px] text-teal-700 font-medium flex items-center gap-1">
-                          <Mic className="w-3 h-3 text-teal-600" /> {t('voiceAssist')}
-                        </span>
-                      </div>
-                    </div>
+    {otpErrorMessage && (
+      <p className="text-red-600 font-bold text-sm mb-4 bg-red-50 px-4 py-2 rounded-xl flex items-center gap-2">
+        <AlertTriangle className="w-4 h-4" />
+        {otpErrorMessage}
+      </p>
+    )}
 
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="text"
-                        maxLength={6}
-                        value={otp}
-                        onChange={(e) => {
-                          setOtp(e.target.value);
-                          setOtpErrorMessage('');
-                        }}
-                        placeholder={t('otpPlaceholder')}
-                        className={`flex-1 sm:w-72 bg-white border-2 border-slate-200 rounded-2xl text-center font-mono font-bold tracking-widest text-slate-900 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all ${
-                          isAdaptiveActive && isTrustLayerEnabled ? 'py-3.5 text-lg' : 'py-2.5 text-sm'
-                        }`}
-                      />
-
-                      <VoiceInputButton
-                        onTranscript={(code) => {
-                          setOtp(code);
-                          setOtpErrorMessage('');
-                        }}
-                        fieldLabel={t('otpLabel')}
-                        isOtp={true}
-                        presetSpoken="839201"
-                        className={isAdaptiveActive && isTrustLayerEnabled ? 'py-3.5 px-3 rounded-2xl' : 'py-2.5 px-3 rounded-xl'}
-                      />
-                    </div>
-
-                    {otpErrorMessage && (
-                      <p className="text-red-600 font-semibold text-xs mt-1 flex items-center gap-1.5">
-                        <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
-                        <span>{otpErrorMessage}</span>
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Submit Button with Dwell-Click */}
-                  <div className="pt-3 flex flex-wrap items-center justify-between gap-4">
-                    <div className="text-xs text-slate-400 flex items-center gap-1.5">
-                      <Lock className="w-3.5 h-3.5 text-slate-400" />
-                      <span>{isTrustLayerEnabled ? 'Accessibility Token Verified Submission' : 'Standard 256-Bit Channel'}</span>
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                      <button
-                        type="button"
-                        onClick={handleReset}
-                        className={`rounded-2xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-semibold transition-all ${
-                          isAdaptiveActive && isTrustLayerEnabled ? 'px-5 py-3.5 text-sm' : 'px-4 py-2.5 text-xs'
-                        }`}
-                      >
-                        {t('clearForm')}
-                      </button>
-
-                      {/* Dwell-Click Adaptive Button */}
-                      <DwellButton
-                        type="submit"
-                        onClick={handleTransfer}
-                        isAdaptiveActive={isAdaptiveActive && isTrustLayerEnabled}
-                        dwellTimeMs={userBaseline?.suggestedDwellMs || 500}
-                        className="bg-teal-600 hover:bg-teal-500 text-white shadow-md shadow-teal-600/20"
-                      >
-                        <Send className="w-4 h-4" />
-                        <span>{t('submitTransfer')}</span>
-                      </DwellButton>
-                    </div>
-                  </div>
-                </form>
+    <div className="grid grid-cols-3 gap-x-6 gap-y-4 max-w-[280px] mx-auto">
+      {['1','2','3','4','5','6','7','8','9','X','0','OK'].map(key => {
+        if (key === 'X') {
+          return (
+            <DwellButton
+              key={key}
+              onClick={() => setOtp(prev => prev.slice(0, -1))}
+              isAdaptiveActive={isAdaptiveActive && isTrustLayerEnabled}
+              dwellTimeMs={userBaseline?.suggestedDwellMs || 500}
+              className={`rounded-full bg-slate-100 text-slate-600 font-bold flex items-center justify-center hover:bg-slate-200 active:bg-slate-300 ${isAdaptiveActive && isTrustLayerEnabled ? 'w-20 h-20 text-2xl' : 'w-16 h-16 text-xl'}`}
+            >
+              ⌫
+            </DwellButton>
+          );
+        }
+        if (key === 'OK') {
+          return (
+            <DwellButton
+              key={key}
+              onClick={handleTransfer}
+              isAdaptiveActive={isAdaptiveActive && isTrustLayerEnabled}
+              dwellTimeMs={userBaseline?.suggestedDwellMs || 500}
+              className={`rounded-full bg-teal-600 text-white font-bold flex items-center justify-center hover:bg-teal-700 active:bg-teal-800 shadow-md ${isAdaptiveActive && isTrustLayerEnabled ? 'w-20 h-20 text-xl' : 'w-16 h-16 text-lg'}`}
+            >
+              <Send className="w-6 h-6" />
+            </DwellButton>
+          );
+        }
+        return (
+          <DwellButton
+            key={key}
+            onClick={() => {
+              if (otp.length < 4) setOtp(prev => prev + key);
+            }}
+            isAdaptiveActive={isAdaptiveActive && isTrustLayerEnabled}
+            dwellTimeMs={userBaseline?.suggestedDwellMs || 500}
+            className={`rounded-full border border-slate-200 bg-white text-slate-900 font-mono font-bold flex items-center justify-center hover:bg-slate-50 active:bg-slate-100 shadow-sm ${isAdaptiveActive && isTrustLayerEnabled ? 'w-20 h-20 text-4xl' : 'w-16 h-16 text-3xl'}`}
+          >
+            {key}
+          </DwellButton>
+        );
+      })}
+    </div>
+    
+    <div className="mt-8 text-[10px] text-slate-400 font-semibold uppercase tracking-wider flex items-center gap-1">
+      <Shield className="w-3 h-3" /> Powered by UPI
+    </div>
+  </div>
+)}
               </div>
             )}
           </div>

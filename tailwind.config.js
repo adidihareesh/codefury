@@ -6,26 +6,28 @@ export default {
   ],
   theme: {
     extend: {
+      colors: {
+        textPrimary: 'var(--color-text-primary)',
+        bgPrimary: 'var(--color-bg-primary)',
+        textInverse: 'var(--color-text-inverse)',
+        bgInverse: 'var(--color-bg-inverse)',
+        danger: 'var(--color-danger)',
+        dangerBg: 'var(--color-danger-bg)',
+        success: 'var(--color-success)',
+        successBg: 'var(--color-success-bg)',
+        warning: 'var(--color-warning)',
+        warningBg: 'var(--color-warning-bg)',
+        accent: 'var(--color-accent)',
+        accentBg: 'var(--color-accent-bg)',
+        fintech: { 50: '#f0fdfa', 100: '#ccfbf1', 200: '#99f6e4', 300: '#5eead4', 400: '#2dd4bf', 500: '#14b8a6', 600: '#0d9488', 700: '#0f766e', 800: '#115e59', 900: '#134e4a', 950: '#042f2e' }
+      },
+
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
         mono: ['JetBrains Mono', 'Fira Code', 'Courier New', 'monospace'],
         bank: ['Arial', 'Helvetica', 'sans-serif']
       },
-      colors: {
-        fintech: {
-          50: '#f0fdfa',
-          100: '#ccfbf1',
-          200: '#99f6e4',
-          300: '#5eead4',
-          400: '#2dd4bf',
-          500: '#14b8a6',
-          600: '#0d9488',
-          700: '#0f766e',
-          800: '#115e59',
-          900: '#134e4a',
-          950: '#042f2e',
-        }
-      },
+      
       keyframes: {
         wiggle: {
           '0%, 100%': { transform: 'rotate(-3deg)' },

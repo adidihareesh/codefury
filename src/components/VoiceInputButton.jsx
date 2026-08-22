@@ -152,10 +152,10 @@ export default function VoiceInputButton({
         title={`Click to speak in ${speechLangCode} (Web Speech API)`}
         className={`p-2 rounded-xl transition-all duration-200 flex items-center gap-1.5 ${
           isListening 
-            ? 'bg-red-500 text-white shadow-lg shadow-red-500/30 animate-pulse ring-2 ring-red-300' 
+            ? 'bg-danger text-white shadow-lg shadow-danger animate-pulse ring-2 ring-danger' 
             : justSpoken 
-            ? 'bg-emerald-500 text-white shadow-md' 
-            : 'bg-slate-100 hover:bg-teal-50 text-slate-600 hover:text-teal-700 border border-slate-200 hover:border-teal-300'
+            ? 'bg-success text-white shadow-md' 
+            : 'bg-slate-100 hover:bg-accentBg text-slate-600 hover:text-accent border border-slate-200 hover:border-accent'
         } ${className}`}
       >
         {isListening ? (
@@ -170,7 +170,7 @@ export default function VoiceInputButton({
           </>
         ) : (
           <>
-            <Mic className="w-4 h-4 text-teal-600" />
+            <Mic className="w-4 h-4 text-accent" />
             <span className="text-[10px] font-semibold text-slate-500 hidden sm:inline">Voice ({speechLangCode.split('-')[0].toUpperCase()})</span>
           </>
         )}
@@ -178,8 +178,8 @@ export default function VoiceInputButton({
 
       {/* Floating listening tooltip */}
       {isListening && (
-        <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 z-30 bg-slate-900 text-white px-3 py-1 rounded-xl text-[11px] font-medium whitespace-nowrap shadow-xl border border-teal-500/40 flex items-center gap-1.5 animate-in fade-in zoom-in-95">
-          <span className="w-2 h-2 rounded-full bg-red-400 animate-ping"></span>
+        <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 z-30 bg-slate-900 text-white px-3 py-1 rounded-xl text-[11px] font-medium whitespace-nowrap shadow-xl border border-accent flex items-center gap-1.5 animate-in fade-in zoom-in-95">
+          <span className="w-2 h-2 rounded-full bg-danger animate-ping"></span>
           <span>{isOtp ? `Speak digits in ${speechLangCode}...` : `Speak ${fieldLabel} in ${speechLangCode}...`}</span>
         </div>
       )}
