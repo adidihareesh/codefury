@@ -1,4 +1,4 @@
-# Trust Layer — Accessibility-Aware Fraud Detection 🛡️
+# Trust Layer — Accessibility-Aware Fraud Detection 
 
 **A revolutionary, dignity-first security framework that prevents banking and government systems from mistakenly locking out users with motor tremors, cognitive disabilities, and neurodivergent profiles.**
 
@@ -13,7 +13,7 @@ Built to champion the **Accessibility & Inclusive Technology** hackathon theme, 
 
 ---
 
-## ✨ Our Solution: The Trust Layer
+## Our Solution: The Trust Layer
 The Trust Layer introduces a groundbreaking security paradigm that bridges the gap between high-stakes fraud prevention and radically inclusive design through three core innovations:
 
 1. **Personal Interaction Baseline Calibration:** Instead of comparing a user against an arbitrary, ableist "average human" standard, the system measures the user's specific motor and cognitive profile during a low-stakes, gamified calibration phase.
@@ -22,33 +22,33 @@ The Trust Layer introduces a groundbreaking security paradigm that bridges the g
 
 ---
 
-## 🚀 Feature Set
+## Feature Set
 
-### 🧠 Real-Time Motor Adaptive UI (Tremor Mitigation)
+###  Real-Time Motor Adaptive UI (Tremor Mitigation)
 * **Intelligent Jitter Tracking:** A bespoke algorithm continuously analyzes cursor and touch trajectories to detect direction reversals, velocity spikes, and tremor likelihood in real-time.
 * **Hold-to-Confirm (Dwell-Click) Buttons:** Precision clicking is a nightmare for users with motor disabilities. We pioneered a robust **Hold-to-Confirm** mechanism where critical actions (like "Proceed to Pay" or "Confirm Pin") are executed simply by holding down the button for a calibrated duration, completely eliminating accidental double-clicks or misclicks.
 * **Dynamic Auto-Extending Timeouts:** Typical banking sessions time out in 2 minutes, causing immense anxiety for users with cognitive delays or physical tremors. Our engine tracks real-time struggle—**if more than 2 distinct tremor signatures are logged, the session is instantly and automatically extended to a generous 5-minute hard cap**, giving the user the breathing room they deserve without compromising absolute security.
 
-### 🎭 Neurodivergent & Sensory Accommodations
+###  Neurodivergent & Sensory Accommodations
 * **Autism-Friendly "Calm Mode":** A dedicated sensory-reduction mode that mutes harsh colors, disables flashing animations, and softens contrast to prevent sensory overload for autistic users.
 * **Cognitive Simplification (Dyslexia/ADHD Support):** A revolutionary "Simplify Text" toggle that instantly translates dense, anxiety-inducing banking jargon into plain, highly legible, and direct language.
 * **Comprehensive Color Blindness Engine:** Built-in, live SVG filtering that perfectly adjusts the entire application palette for Deuteranopia (green-blind), Tritanopia (blue-blind), and Monochromacy, ensuring critical success/error states are never conveyed by color alone.
 
-### 🤖 Saathi: The Conversational AI Assistant
+###  Saathi: The Conversational AI Assistant
 * Rigid web forms are inherently inaccessible. **Saathi** is our intelligent, WhatsApp-style chat assistant that allows users to complete complex UPI transfers conversationally.
 * Integrated with the **Web Speech API**, users can bypass typing entirely, issuing voice commands to fill out forms and execute payments with zero physical friction.
 
-### 📸 Zero-Friction Document Auto-Fill (OCR)
+###  Zero-Friction Document Auto-Fill (OCR)
 * A privacy-first, browser-based Optical Character Recognition (OCR) pipeline powered by **Tesseract.js**. 
 * Users can simply drag-and-drop or snap a photo of their Aadhaar/ID card. The engine intelligently reads the document, handles auto-rotation for upside-down images, and instantly auto-fills their Name, Date of Birth, and ID Number—bypassing the need for grueling manual data entry.
 
-### 🌐 Universal Localization
+###  Universal Localization
 * Seamless, live UI translation across English, Hindi, Kannada, and Tamil. This localization extends deeply into the platform, automatically translating the Saathi AI responses, Web Speech synthesis prompts, and voice recognition models.
 
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 * **Frontend Framework:** React 18 (Vite) for blazing-fast rendering.
 * **Styling & Animation:** Tailwind CSS & Lucide React Icons for a fluid, accessible UI.
 * **Optical Character Recognition:** Tesseract.js (Client-side WASM) for secure, offline document parsing.
@@ -59,14 +59,14 @@ The Trust Layer introduces a groundbreaking security paradigm that bridges the g
 
 ---
 
-## 🌍 Live Demo
+##  Live Demo
 https://codefury1.vercel.app/#/trust-layer
 
 * **`/trust-layer` (The Solution):** Step into the future of inclusive finance. Generate your baseline token, trigger a tremor, and watch the session dynamically extend, buttons transition to hold-to-confirm, and the transaction safely process.
 
 ---
 
-## 💻 How to Run Locally
+##  How to Run Locally
 
 1. **Clone the repository:**
    ```bash
@@ -85,7 +85,7 @@ https://codefury1.vercel.app/#/trust-layer
 
 ---
 
-## 💖 Why This Matters
+##  Why This Matters
 True accessibility in fintech demands absolute dignity. The Trust Layer never forces users to upload medical documents or humiliatingly "prove" their disability to a customer support agent. It responds empathetically to their natural behavior in real-time. By architecturally separating "UI accommodations" from "high-stakes fraud prevention," we have proven that digital security systems can be simultaneously impenetrable to malicious bots and radically welcoming to all human beings. 
 
 This isn't just an accommodation—it is the baseline right to independent financial sovereignty.
