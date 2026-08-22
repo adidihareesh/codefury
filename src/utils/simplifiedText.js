@@ -87,6 +87,44 @@ export const textStrings = {
     kn: "ಅಮಾನ್ಯ ಬಳಕೆದಾರ ಹೆಸರು ಅಥವಾ ಪಾಸ್‌ವರ್ಡ್.",
     ta: "தவறான பயனர்பெயர் அல்லது கடவுச்சொல்."
   },
+
+  proceedToPay: {
+    en: 'Proceed to Pay',
+    hi: 'भुगतान करने के लिए आगे बढ़ें',
+    kn: 'ಪಾವತಿಸಲು ಮುಂದುವರಿಯಿರಿ',
+    ta: 'பணம் செலுத்த தொடரவும்'
+  },
+  paying: {
+    en: 'Paying',
+    hi: 'भुगतान कर रहे हैं',
+    kn: 'ಪಾವತಿಸುತ್ತಿರುವ',
+    ta: 'செலுத்துகிறார்'
+  },
+  cancel: {
+    en: 'Cancel',
+    hi: 'रद्द करें',
+    kn: 'ರದ್ದುಮಾಡಿ',
+    ta: 'ரத்து செய்'
+  },
+  confirm: {
+    en: 'Confirm',
+    hi: 'पुष्टि करें',
+    kn: 'ಖಚಿತಪಡಿಸಿ',
+    ta: 'உறுதிப்படுத்து'
+  },
+  enterPin: {
+    en: 'Enter 4-Digit UPI PIN',
+    hi: '4-अंकीय UPI पिन दर्ज करें',
+    kn: '4-ಅಂಕಿಯ UPI ಪಿನ್ ನಮೂದಿಸಿ',
+    ta: '4 இலக்க UPI PIN ஐ உள்ளிடவும்'
+  },
+  spokenConfirmPrompt: {
+    en: 'Proceed to pay AMOUNT to RECIPIENT. Please confirm or cancel.',
+    hi: 'RECIPIENT को AMOUNT का भुगतान करने के लिए आगे बढ़ें। कृपया पुष्टि करें या रद्द करें।',
+    kn: 'RECIPIENT ಗೆ AMOUNT ಪಾವತಿಸಲು ಮುಂದುವರಿಯಿರಿ. ದಯವಿಟ್ಟು ಖಚಿತಪಡಿಸಿ ಅಥವಾ ರದ್ದುಮಾಡಿ.',
+    ta: 'RECIPIENT க்கு AMOUNT செலுத்த தொடரவும். தயவுசெய்து உறுதிப்படுத்தவும் அல்லது ரத்து செய்யவும்.'
+  },
+
   noAccountPrompt: {
     en: "Don't have an account?",
     hi: "खाता नहीं है?",
