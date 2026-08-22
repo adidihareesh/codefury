@@ -72,7 +72,7 @@ export function AccessibilityProvider({ children }) {
 
   const speakText = (text) => {
     if (!('speechSynthesis' in window)) {
-      alert('Text-to-speech is not supported in this browser.');
+      console.warn('Text-to-speech is not supported in this browser.');
       return;
     }
 
@@ -80,16 +80,53 @@ export function AccessibilityProvider({ children }) {
       window.speechSynthesis.cancel(); // Stop any active speech
 
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = speechLangMap[language] || 'en-IN';
-      utterance.rate = 0.95; // Slightly slower for clarity
+      const targetLang = speechLangMap[language] || 'en-IN';
+      
+      let voices = window.speechSynthesis.getVoices();
+      
+      // Some browsers load voices asynchronously. If empty, it'll use default.
+      if (voices.length > 0) {
+        const exactVoice = voices.find(v => v.lang === targetLang);
+        const looseVoice = voices.find(v => v.lang.startsWith(targetLang.split('-')[0]));
+        
+        if (exactVoice) {
+          utterance.voice = exactVoice;
+          utterance.lang = exactVoice.lang;
+        } else if (looseVoice) {
+          utterance.voice = looseVoice;
+          utterance.lang = looseVoice.lang;
+        } else {
+          console.warn(`No voice found for ${targetLang}. Falling back to en-IN.`);
+          const fallbackVoice = voices.find(v => v.lang.startsWith('en'));
+          if (fallbackVoice) {
+            utterance.voice = fallbackVoice;
+            utterance.lang = fallbackVoice.lang;
+          } else {
+            utterance.lang = 'en-IN';
+          }
+        }
+      } else {
+        utterance.lang = targetLang;
+      }
+      
+      utterance.rate = 0.95;
       utterance.pitch = 1.0;
 
       utterance.onstart = () => setIsSpeaking(true);
       utterance.onend = () => setIsSpeaking(false);
-      utterance.onerror = () => setIsSpeaking(false);
+      utterance.onerror = (e) => {
+        console.error('Speech synthesis error:', e);
+        setIsSpeaking(false);
+      };
 
       window.speechSynthesis.speak(utterance);
-    } catch {
+      
+      // Hack for Chrome bug where long utterances get canceled
+      if (window.speechSynthesis.resume) {
+        window.speechSynthesis.resume();
+      }
+    } catch (e) {
+      console.error('TTS failed:', e);
       setIsSpeaking(false);
     }
   };

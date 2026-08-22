@@ -19,6 +19,13 @@ export default function DwellButton({
   const startTimeRef = useRef(null);
 
   const startHold = (e) => {
+    // UNLOCK WEB SPEECH API SYNCHRONOUSLY ON FIRST HOLD
+    if ('speechSynthesis' in window && window.speechSynthesis.paused === false) {
+      const unlock = new SpeechSynthesisUtterance('');
+      unlock.volume = 0;
+      window.speechSynthesis.speak(unlock);
+    }
+
     if (disabled || isTriggered) return;
 
     if (!isAdaptiveActive) {
