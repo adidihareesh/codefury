@@ -106,13 +106,19 @@ export default function TrustLayer({ setCurrentRoute }) {
   const [transferSuccess, setTransferSuccess] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showPinPad, setShowPinPad] = useState(false);
+  const hasSpokenConfirmationRef = useRef(false);
 
   // Trigger voice confirmation
   useEffect(() => {
     if (showConfirmation && !showPinPad && !transferSuccess) {
-      const msgTemplate = t('spokenConfirmPrompt') || 'Proceed to pay AMOUNT to RECIPIENT. Please confirm or cancel.';
-      const msg = msgTemplate.replace('AMOUNT', amount).replace('RECIPIENT', recipient);
-      speakText(msg);
+      if (!hasSpokenConfirmationRef.current) {
+        const msgTemplate = t('spokenConfirmPrompt') || 'Proceed to pay AMOUNT to RECIPIENT. Please confirm or cancel.';
+        const msg = msgTemplate.replace('AMOUNT', amount).replace('RECIPIENT', recipient);
+        speakText(msg);
+        hasSpokenConfirmationRef.current = true;
+      }
+    } else {
+      hasSpokenConfirmationRef.current = false;
     }
   }, [showConfirmation, showPinPad, transferSuccess, amount, recipient, t, speakText]);
 
