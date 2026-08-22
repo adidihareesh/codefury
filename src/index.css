@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-950 text-slate-100 antialiased selection:bg-teal-500 selection:text-white;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Banking retro theme font */
+  .font-bank {
+    font-family: 'Tahoma', 'Segoe UI', Geneva, Verdana, sans-serif;
+  }
+}
+
+/* Retro Windows / 2000s Button Styling for Dummy Bank */
+.retro-button {
+  background: #ece9d8;
+  border-top: 2px solid #ffffff;
+  border-left: 2px solid #ffffff;
+  border-right: 2px solid #7f9db9;
+  border-bottom: 2px solid #7f9db9;
+  box-shadow: 1px 1px 0px #000000;
+  transition: all 0.05s ease;
+}
+
+.retro-button:active {
+  border-top: 2px solid #7f9db9;
+  border-left: 2px solid #7f9db9;
+  border-right: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+  box-shadow: none;
+  transform: translate(1px, 1px);
+}
+
+/* Simulated Tremor Jitter Animation */
+@keyframes microJitter {
+  0% { transform: translate(0px, 0px); }
+  20% { transform: translate(-3px, 2px); }
+  40% { transform: translate(2px, -3px); }
+  60% { transform: translate(-2px, -2px); }
+  80% { transform: translate(3px, 1px); }
+  100% { transform: translate(0px, 0px); }
+}
+
+.simulated-cursor-jitter {
+  animation: microJitter 0.12s infinite linear;
+}
+
+/* ========================================================================= */
+/* 3. LOW-VISION / HIGH-CONTRAST CSS MODE */
+/* ========================================================================= */
+.high-contrast-mode {
+  font-size: 1.15rem !important;
+}
+
+.high-contrast-mode input,
+.high-contrast-mode button,
+.high-contrast-mode select,
+.high-contrast-mode textarea {
+  border-width: 2px !important;
+  border-color: #000000 !important;
+  color: #000000 !important;
+}
+
+.high-contrast-mode *:focus,
+.high-contrast-mode *:focus-visible {
+  outline: 3.5px solid #ffcc00 !important;
+  outline-offset: 2px !important;
+}
+
+.high-contrast-mode .bg-white {
+  background-color: #ffffff !important;
+  border: 2px solid #000000 !important;
+  color: #000000 !important;
+}
+
+.high-contrast-mode .text-slate-600,
+.high-contrast-mode .text-slate-500,
+.high-contrast-mode .text-slate-400,
+.high-contrast-mode .text-gray-500,
+.high-contrast-mode .text-gray-600 {
+  color: #000000 !important;
+  font-weight: 600 !important;
+}
+
+/* ========================================================================= */
+/* 4. COGNITIVE / SIMPLIFY TEXT MODE */
+/* ========================================================================= */
+.simplify-text-mode {
+  line-height: 1.75 !important;
+  letter-spacing: 0.02em !important;
+}
+
+.simplify-text-mode p,
+.simplify-text-mode label,
+.simplify-text-mode span {
+  line-height: 1.7 !important;
+}
