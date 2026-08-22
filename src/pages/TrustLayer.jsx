@@ -54,7 +54,8 @@ export default function TrustLayer({ setCurrentRoute }) {
     isHighContrast, setIsHighContrast,
     isSimplifyText, setIsSimplifyText,
     language, setLanguage,
-    colorBlindness, setColorBlindness
+    colorBlindness, setColorBlindness,
+    speakText
   } = useAccessibility();
 
   // Master Switch: "With Trust Layer" is now permanently ON
@@ -696,6 +697,15 @@ export default function TrustLayer({ setCurrentRoute }) {
     );
   }
 
+  
+  useEffect(() => {
+    if (showConfirmation && !showPinPad && !transferSuccess) {
+      const msgTemplate = t('spokenConfirmPrompt') || 'Proceed to pay AMOUNT to RECIPIENT. Please confirm or cancel.';
+      const msg = msgTemplate.replace('AMOUNT', amount).replace('RECIPIENT', recipient);
+      speakText(msg);
+    }
+  }, [showConfirmation, showPinPad, transferSuccess, amount, recipient, t, speakText]);
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-4 font-sans">
       {/* Calibration Modal */}
@@ -1172,7 +1182,7 @@ export default function TrustLayer({ setCurrentRoute }) {
         dwellTimeMs={userBaseline?.suggestedDwellMs || 500}
         className="w-full max-w-sm bg-teal-600 hover:bg-teal-700 text-white shadow-lg text-base py-4 rounded-3xl font-bold flex justify-center items-center"
       >
-        <span>Proceed to Pay</span>
+        <span>{t('proceedToPay')}</span>
       </DwellButton>
       <div className="mt-4 text-[10px] text-slate-400 font-semibold uppercase tracking-wider flex items-center gap-1">
         <Shield className="w-3 h-3" /> Powered by UPI
@@ -1186,7 +1196,7 @@ export default function TrustLayer({ setCurrentRoute }) {
     <div className="w-20 h-20 bg-teal-50 border border-teal-100 rounded-full flex items-center justify-center mb-2 shadow-inner">
       <User className="w-10 h-10 text-teal-600" />
     </div>
-    <h3 className="text-xl text-slate-500 font-medium">Paying</h3>
+    <h3 className="text-xl text-slate-500 font-medium">{t('paying')}</h3>
     <h2 className="text-3xl font-bold text-slate-900 capitalize">{recipient}</h2>
     <div className="text-5xl font-mono font-extrabold text-slate-900 my-4">₹{amount}</div>
     
@@ -1195,7 +1205,7 @@ export default function TrustLayer({ setCurrentRoute }) {
         onClick={() => setShowConfirmation(false)} 
         className="flex-1 py-3 rounded-2xl border-2 border-slate-200 text-slate-600 font-bold hover:bg-slate-50"
       >
-        Cancel
+        {t('cancel')}
       </button>
       <DwellButton
         onClick={() => { setShowConfirmation(false); setShowPinPad(true); }}
@@ -1203,7 +1213,7 @@ export default function TrustLayer({ setCurrentRoute }) {
         dwellTimeMs={userBaseline?.suggestedDwellMs || 500}
         className="flex-1 py-3 rounded-2xl bg-teal-600 text-white font-bold hover:bg-teal-700 shadow-lg flex justify-center items-center"
       >
-        Confirm
+        {t('confirm')}
       </DwellButton>
     </div>
     <div className="mt-6 text-[10px] text-slate-400 font-semibold uppercase tracking-wider flex items-center gap-1">
@@ -1214,7 +1224,7 @@ export default function TrustLayer({ setCurrentRoute }) {
 
 {showPinPad && !transferSuccess && (
   <div className="space-y-6 animate-in slide-in-from-right-4 duration-300 flex flex-col items-center mt-8 pb-12">
-    <h2 className="text-lg font-bold text-slate-700 mb-2">Enter 4-Digit UPI PIN</h2>
+    <h2 className="text-lg font-bold text-slate-700 mb-2">{t('enterPin')}</h2>
     <div className="flex gap-4 justify-center mb-8">
       {[...Array(4)].map((_, i) => (
         <div key={i} className={`w-6 h-6 rounded-full border-2 ${otp.length > i ? 'bg-slate-900 border-slate-900' : 'bg-transparent border-slate-300'}`}></div>
