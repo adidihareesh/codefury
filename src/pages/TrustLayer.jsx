@@ -107,6 +107,15 @@ export default function TrustLayer({ setCurrentRoute }) {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showPinPad, setShowPinPad] = useState(false);
 
+  // Trigger voice confirmation
+  useEffect(() => {
+    if (showConfirmation && !showPinPad && !transferSuccess) {
+      const msgTemplate = t('spokenConfirmPrompt') || 'Proceed to pay AMOUNT to RECIPIENT. Please confirm or cancel.';
+      const msg = msgTemplate.replace('AMOUNT', amount).replace('RECIPIENT', recipient);
+      speakText(msg);
+    }
+  }, [showConfirmation, showPinPad, transferSuccess, amount, recipient, t, speakText]);
+
   // Real-Time Live Jitter & Tremor Likelihood Tracking State
   const [liveJitterMetrics, setLiveJitterMetrics] = useState({
     tremorLikelihood: 12,
