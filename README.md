@@ -4,7 +4,7 @@
 
 ---
 
-## 🛑 The Problem: The Disability-as-Fraud Paradox
+##  The Problem: The Disability-as-Fraud Paradox
 Modern digital banking and government portals rely heavily on behavioral biometrics (like reCAPTCHA v3) to detect fraud. These systems track mouse movements, typing speed, and form completion times to ruthlessly distinguish humans from bots. 
 
 Unfortunately, this creates a devastating **Disability-as-Fraud Paradox**: legitimate users with Parkinson's, essential tremors, autism, or cognitive delays naturally exhibit erratic mouse movements, slow typing speeds, and require multiple OTP retries. Standard security algorithms mistakenly flag these genuine accessibility struggles as "bot-like" behavior or "account takeover" attempts, instantly locking disabled users out of their own finances and essential services.
