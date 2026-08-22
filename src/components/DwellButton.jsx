@@ -41,7 +41,15 @@ export default function DwellButton({
         setProgress(100);
         
         // Trigger action
-        if (onClick) onClick(e);
+        if (onClick) {
+          onClick(e);
+        } else if (type === 'submit') {
+          // Find the closest form and trigger a native submit
+          const form = e.target.closest('form');
+          if (form) {
+            form.requestSubmit();
+          }
+        }
 
         setTimeout(() => {
           setIsTriggered(false);
