@@ -536,15 +536,7 @@ export default function TrustLayer({ setCurrentRoute }) {
 
   // Ensure the login page acts as a clean slate (reset settings on logout/mount)
   useEffect(() => {
-    useEffect(() => {
-    if (showConfirmation && !showPinPad && !transferSuccess) {
-      const msgTemplate = t('spokenConfirmPrompt') || 'Proceed to pay AMOUNT to RECIPIENT. Please confirm or cancel.';
-      const msg = msgTemplate.replace('AMOUNT', amount).replace('RECIPIENT', recipient);
-      speakText(msg);
-    }
-  }, [showConfirmation, showPinPad, transferSuccess, amount, recipient, t, speakText]);
-  
-  if (!isAuthenticated) {
+    if (!isAuthenticated) {
       setLanguage('en');
       setIsHighContrast(false);
       setIsSimplifyText(false);
