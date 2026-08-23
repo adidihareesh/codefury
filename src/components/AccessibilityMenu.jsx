@@ -66,7 +66,7 @@ export default function AccessibilityMenu() {
             : 'bg-bgInverse hover:bg-slate-700 text-textInverse border border-slate-700'
         }`}
       >
-        <Eye className="w-4 h-4 text-accent" />
+        <Eye className="w-4 h-4 text-teal-600" />
         <span className="hidden sm:inline">
           {language !== 'en' ? `Language: ${language.toUpperCase()}` : 'Accessibility'}
         </span>
@@ -88,7 +88,7 @@ export default function AccessibilityMenu() {
             {/* Header */}
             <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-xl bg-accentBg text-accent flex items-center justify-center">
+                <div className="w-8 h-8 rounded-xl bg-teal-500Bg text-teal-600 flex items-center justify-center">
                   <Sliders className="w-4 h-4" />
                 </div>
                 <div>
@@ -110,10 +110,10 @@ export default function AccessibilityMenu() {
               <div>
                 <label className="block font-bold text-slate-300 mb-1.5 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
-                    <Languages className="w-3.5 h-3.5 text-accent" />
+                    <Languages className="w-3.5 h-3.5 text-teal-600" />
                     <span>Language / भाषा / ಭಾಷೆ / மொழி:</span>
                   </span>
-                  <span className="text-[10px] text-accent font-mono">Voice & Text</span>
+                  <span className="text-[10px] text-teal-600 font-mono">Voice & Text</span>
                 </label>
                 <select
                   value={language}
@@ -127,7 +127,7 @@ export default function AccessibilityMenu() {
                   ))}
                 </select>
                 <p className="text-[10px] text-slate-500 mt-1 flex items-center gap-1">
-                  <Volume2 className="w-3 h-3 text-accent" />
+                  <Volume2 className="w-3 h-3 text-teal-600" />
                   <span>Updates text labels, Web Speech input, and audio TTS instructions.</span>
                 </p>
               </div>
@@ -136,11 +136,11 @@ export default function AccessibilityMenu() {
               <div className="pt-2 border-t border-slate-800">
                 <label className="block font-bold text-slate-300 mb-1.5 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
-                    <Eye className="w-3.5 h-3.5 text-accent" />
+                    <Eye className="w-3.5 h-3.5 text-teal-600" />
                     <span>Color Blindness Filter:</span>
                   </span>
                   {colorBlindness !== 'none' && (
-                    <span className="text-[10px] text-accent font-mono">SVG Active</span>
+                    <span className="text-[10px] text-teal-600 font-mono">SVG Active</span>
                   )}
                 </label>
                 <select
@@ -173,7 +173,7 @@ export default function AccessibilityMenu() {
                     type="button"
                     onClick={() => setIsHighContrast(!isHighContrast)}
                     className={`w-12 h-6 rounded-full transition-colors relative p-0.5 ${
-                      isHighContrast ? 'bg-accent' : 'bg-bgInverse'
+                      isHighContrast ? 'bg-teal-500' : 'bg-slate-200'
                     }`}
                   >
                     <div
@@ -202,7 +202,7 @@ export default function AccessibilityMenu() {
                     type="button"
                     onClick={() => setIsSimplifyText(!isSimplifyText)}
                     className={`w-12 h-6 rounded-full transition-colors relative p-0.5 ${
-                      isSimplifyText ? 'bg-accent' : 'bg-bgInverse'
+                      isSimplifyText ? 'bg-teal-500' : 'bg-slate-200'
                     }`}
                   >
                     <div
@@ -219,7 +219,7 @@ export default function AccessibilityMenu() {
                 <div className="flex items-center justify-between">
                   <div>
                     <span className="font-bold text-slate-200 flex items-center gap-1.5">
-                      <span className="w-3.5 h-3.5 rounded-full bg-accent" />
+                      <span className="w-3.5 h-3.5 rounded-full bg-teal-500" />
                       <span>Reduced Sensory / Calm Mode {isCalmMode ? '✅ ON' : 'OFF'}</span>
                     </span>
                     <p className="text-[10px] text-slate-500 mt-0.5">
@@ -231,7 +231,7 @@ export default function AccessibilityMenu() {
                     type="button"
                     onClick={() => setIsCalmMode(!isCalmMode)}
                     className={`w-12 h-6 rounded-full transition-colors relative p-0.5 ${
-                      isCalmMode ? 'bg-accent' : 'bg-bgInverse'
+                      isCalmMode ? 'bg-teal-500' : 'bg-slate-200'
                     }`}
                   >
                     <div
