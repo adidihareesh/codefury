@@ -456,15 +456,7 @@ export default function SaathiChatAssistant({
             </>
           )}
 
-          {step === 'OTP' && (
-            <button
-              type="button"
-              onClick={() => handleSendMessage('8392')}
-              className="px-3.5 py-1 rounded-xl bg-yellow-100 hover:bg-yellow-200 text-textPrimary border border-yellow-300 text-xs font-mono font-bold transition-all shadow-xs flex items-center gap-1"
-            >
-              <span>{getDialog('uiUseOtpChip')}</span>
-            </button>
-          )}
+          
         </div>
       )}
 

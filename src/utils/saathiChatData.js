@@ -192,10 +192,10 @@ export const saathiDialogs = {
     ta: "தொகையை ரூபாயில் உள்ளிடவும் (எ.கா. 350)..."
   },
   placeholderOtp: {
-    en: "Type or speak 4-digit UPI PIN (e.g. 8392)...",
-    hi: "4 अंकों का UPI PIN लिखें या बोलें (उदा. 8392)...",
-    kn: "6 ಅಂಕಿಯ OTP ಬರೆಯಿರಿ ಅಥವಾ ಮಾತನಾಡಿ (ಉದಾ. 8392)...",
-    ta: "4 இலக்க UPI PIN-ஐ உள்ளிடவும் அல்லது பேசவும் (எ.கா. 8392)..."
+    en: "Type or speak 4-digit UPI PIN (e.g. XXXX)...",
+    hi: "4 अंकों का UPI PIN लिखें या बोलें (उदा. XXXX)...",
+    kn: "6 ಅಂಕಿಯ OTP ಬರೆಯಿರಿ ಅಥವಾ ಮಾತನಾಡಿ (ಉದಾ. XXXX)...",
+    ta: "4 இலக்க UPI PIN-ஐ உள்ளிடவும் அல்லது பேசவும் (எ.கா. XXXX)..."
   },
   placeholderReady: {
     en: "Transfer is ready to authorize above...",
