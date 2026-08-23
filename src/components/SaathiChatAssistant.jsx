@@ -256,7 +256,7 @@ export default function SaathiChatAssistant({
             type="button"
             onClick={handleResetChat}
             title={getDialog('uiStartOver')}
-            className="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-textInverse border border-slate-700 text-xs flex items-center gap-1.5 transition-all font-sans font-semibold"
+            className="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-300 text-xs flex items-center gap-1.5 transition-all font-sans font-semibold"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">{getDialog('uiStartOver')}</span>

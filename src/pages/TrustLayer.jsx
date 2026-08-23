@@ -1332,7 +1332,7 @@ export default function TrustLayer({ setCurrentRoute }) {
               {/* Metric 1 */}
               <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3">
                 <span className="text-[10px] text-slate-400 uppercase font-semibold">{t('signaturesLogged')}</span>
-                <div className={`text-base font-mono font-bold mt-0.5 ${tremorSignaturesCount > 0 ? 'text-teal-300' : 'text-slate-400'}`}>
+                <div className={`text-base font-mono font-bold mt-0.5 ${tremorSignaturesCount > 0 ? 'text-teal-600' : 'text-slate-700'}`}>
                   {tremorSignaturesCount} Signatures
                 </div>
                 <span className="text-[10px] text-slate-400">Budget: {formatTime(allocatedBudgetSeconds)}</span>
@@ -1341,7 +1341,7 @@ export default function TrustLayer({ setCurrentRoute }) {
               {/* Metric 2 */}
               <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3">
                 <span className="text-[10px] text-slate-400 uppercase font-semibold">{t('sessionTimeoutLabel')}</span>
-                <div className={`text-base font-mono font-bold mt-0.5 ${capProgressPct >= 80 ? 'text-amber-400' : 'text-emerald-400'}`}>
+                <div className={`text-base font-mono font-bold mt-0.5 ${capProgressPct >= 80 ? 'text-amber-600' : 'text-emerald-600'}`}>
                   {formatTime(sessionTimeElapsed)} / 5:00
                 </div>
                 <span className="text-[10px] text-slate-400">{Math.round(capProgressPct)}% of Hard Cap</span>
@@ -1350,7 +1350,7 @@ export default function TrustLayer({ setCurrentRoute }) {
               {/* Metric 3 */}
               <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3">
                 <span className="text-[10px] text-slate-400 uppercase font-semibold">{t('hudTremorLikelihood')}</span>
-                <div className={`text-base font-mono font-bold mt-0.5 ${liveJitterMetrics.tremorLikelihood >= 60 ? 'text-amber-400' : 'text-teal-300'}`}>
+                <div className={`text-base font-mono font-bold mt-0.5 ${liveJitterMetrics.tremorLikelihood >= 60 ? 'text-amber-600' : 'text-teal-600'}`}>
                   {liveJitterMetrics.tremorLikelihood}%
                 </div>
                 <span className="text-[10px] text-slate-400 truncate block">Ratio: {liveJitterMetrics.jitterRatio}x</span>
@@ -1361,10 +1361,10 @@ export default function TrustLayer({ setCurrentRoute }) {
                 <span className="text-[10px] text-slate-400 uppercase font-semibold">Security Status</span>
                 <div className={`text-sm font-mono font-bold mt-0.5 uppercase ${
                   isGracefulTimeout 
-                    ? 'text-teal-400' 
+                    ? 'text-teal-700' 
                     : isLocked 
-                    ? 'text-red-400' 
-                    : 'text-emerald-400'
+                    ? 'text-red-600' 
+                    : 'text-emerald-600'
                 }`}>
                   {isGracefulTimeout ? '🔒 5:00 HARD CAP' : isLocked ? '🛑 LOCKED' : '🟢 ACTIVE SESSION'}
                 </div>
