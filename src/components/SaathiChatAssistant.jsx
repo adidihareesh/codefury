@@ -278,7 +278,7 @@ export default function SaathiChatAssistant({
             >
               {/* Saathi Bot Avatar */}
               {msg.sender === 'saathi' && (
-                <div className="w-8 h-8 rounded-xl bg-accent text-textInverse flex items-center justify-center shrink-0 shadow-sm mt-1">
+                <div className="w-8 h-8 rounded-xl bg-[#E5F0FF] text-[#0047AB] flex items-center justify-center shrink-0 shadow-sm mt-1 border border-[#CCE0FF]">
                   <Bot className="w-4 h-4" />
                 </div>
               )}
@@ -292,7 +292,7 @@ export default function SaathiChatAssistant({
                 <div
                   className={`p-3.5 rounded-3xl text-xs sm:text-sm font-medium leading-relaxed shadow-sm relative group ${
                     msg.sender === 'user'
-                      ? 'bg-accent text-textInverse rounded-tr-sm'
+                      ? 'bg-[#E5F0FF] text-slate-900 border border-[#CCE0FF] rounded-tr-sm'
                       : msg.isAdaptiveNotice
                       ? 'bg-warningBg text-textPrimary border-2 border-warning/80 rounded-tl-sm shadow-md font-sans'
                       : 'bg-white text-textPrimary border border-slate-200/90 rounded-tl-sm font-sans'
@@ -367,7 +367,7 @@ export default function SaathiChatAssistant({
                         onClick={handleAuthorizeTransfer}
                         isAdaptiveActive={isAdaptiveActive && isTrustLayerEnabled}
                         dwellTimeMs={userBaseline?.suggestedDwellMs || 500}
-                        className="bg-accent hover:brightness-90 text-textInverse font-bold shadow-lg shadow-accent px-5 py-2.5 font-sans"
+                        className="bg-[#E5F0FF] hover:bg-[#CCE0FF] text-[#0047AB] font-bold shadow-md border border-[#CCE0FF] px-5 py-2.5 font-sans"
                       >
                         <Send className="w-4 h-4" />
                         <span>{getDialog('uiConfirmSendBtn')} ₹{amount || '350.00'}</span>
@@ -413,13 +413,13 @@ export default function SaathiChatAssistant({
         {/* Typing Indicator */}
         {isBotTyping && (
           <div className="flex items-center gap-2.5 justify-start animate-in fade-in">
-            <div className="w-8 h-8 rounded-xl bg-accent text-textInverse flex items-center justify-center shrink-0 shadow-sm">
+            <div className="w-8 h-8 rounded-xl bg-[#E5F0FF] text-[#0047AB] flex items-center justify-center shrink-0 shadow-sm border border-[#CCE0FF]">
               <Bot className="w-4 h-4" />
             </div>
             <div className="bg-white border border-slate-200 px-4 py-3 rounded-2xl rounded-tl-sm shadow-sm flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-accent animate-bounce"></span>
-              <span className="w-2 h-2 rounded-full bg-accent animate-bounce [animation-delay:0.2s]"></span>
-              <span className="w-2 h-2 rounded-full bg-accent animate-bounce [animation-delay:0.4s]"></span>
+              <span className="w-2 h-2 rounded-full bg-[#80B3FF] animate-bounce"></span>
+              <span className="w-2 h-2 rounded-full bg-[#80B3FF] animate-bounce [animation-delay:0.2s]"></span>
+              <span className="w-2 h-2 rounded-full bg-[#80B3FF] animate-bounce [animation-delay:0.4s]"></span>
             </div>
           </div>
         )}
@@ -508,7 +508,7 @@ export default function SaathiChatAssistant({
         <button
           type="submit"
           disabled={!inputText.trim() || step === 'CONFIRM' || step === 'SUCCESS'}
-          className="p-3 rounded-2xl bg-accent hover:brightness-90 text-textInverse font-bold transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-md shadow-accent active:scale-95 flex items-center justify-center"
+          className="p-3 rounded-2xl bg-[#E5F0FF] hover:bg-[#CCE0FF] text-[#0047AB] font-bold transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-sm border border-[#CCE0FF] active:scale-95 flex items-center justify-center"
         >
           <Send className="w-4 h-4" />
         </button>
