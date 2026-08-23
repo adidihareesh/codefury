@@ -20,7 +20,22 @@
 
     --color-accent: #0466C8;
     --color-accent-bg: #E8F1FB;
-  }
+  
+  /* Fix Navigation Accessibility Button */
+  .text-textInverse { color: #3A2E3D !important; }
+  .text-slate-800 { color: #2B212E !important; }
+  
+  /* Fix Home.jsx Overview Grid Boxes */
+  .bg-slate-950\/70 { background-color: #FAF5F0 !important; }
+  .bg-slate-900\/50 { background-color: #FFFFFF !important; }
+  
+  /* Make sure background for Home buttons looks right */
+  .bg-slate-950 { background-color: #FAF5F0 !important; }
+  
+  /* Specific override for any text-slate-200 to be very visible */
+  .text-slate-200 { color: #2B212E !important; font-weight: bold !important; }
+
+}
 
   .calm-mode {
     --color-bg-primary: #F4F1EC;
@@ -178,4 +193,20 @@
   /* Fix opacity backgrounds */
   .bg-slate-900\/90 { background-color: rgba(255, 255, 255, 0.95) !important; }
   .bg-teal-500\/20 { background-color: rgba(242, 187, 175, 0.3) !important; }
+}
+
+@layer utilities {
+  /* Fix Navigation Accessibility Button */
+  .text-textInverse { color: #3A2E3D !important; font-weight: bold !important; }
+  .text-slate-800 { color: #2B212E !important; }
+  
+  /* Fix Home.jsx Overview Grid Boxes */
+  .bg-slate-950\/70 { background-color: #FAF5F0 !important; }
+  .bg-slate-900\/50 { background-color: #FFFFFF !important; }
+  
+  /* Make sure background for Home buttons looks right */
+  .bg-slate-950 { background-color: #FAF5F0 !important; }
+  
+  /* Specific override for any text-slate-200 to be very visible */
+  .text-slate-200 { color: #2B212E !important; font-weight: bold !important; }
 }
