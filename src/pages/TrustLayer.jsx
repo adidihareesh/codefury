@@ -561,7 +561,8 @@ export default function TrustLayer({ setCurrentRoute }) {
 
   if (!isAuthenticated) {
     return (
-      <div className="max-w-md mx-auto mt-12 px-4 py-8 font-sans">
+      <div className="fixed inset-0 bg-[#FDF0EE] overflow-y-auto">
+      <div className="max-w-md mx-auto mt-12 px-4 py-8 font-sans relative z-10">
 
         <div className="bg-white border border-slate-200 rounded-3xl shadow-xl mt-6 p-6 sm:p-8">
           <div className="text-center mb-6">
@@ -709,6 +710,7 @@ export default function TrustLayer({ setCurrentRoute }) {
           </div>
         </div>
       </div>
+    </div>
     );
   }
 
@@ -1304,8 +1306,8 @@ export default function TrustLayer({ setCurrentRoute }) {
       </div>
 
       {/* Live Demo Inspector with ESCALATING SIGNATURE TRIGGERS */}
-      <div className="mt-8 bg-slate-900 border border-slate-800 rounded-3xl p-5 text-white shadow-2xl">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3 mb-4">
+      <div className="mt-8 bg-white border border-slate-200 rounded-3xl p-5 text-slate-900 shadow-xl">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 pb-3 mb-4">
           <div className="flex items-center gap-2.5">
             <div className="w-3 h-3 rounded-full bg-teal-400 animate-pulse"></div>
             <span className="font-mono text-xs font-bold text-teal-300 uppercase tracking-wider">
@@ -1317,7 +1319,7 @@ export default function TrustLayer({ setCurrentRoute }) {
 
             <button
               onClick={() => setShowInspector(!showInspector)}
-              className="text-xs text-slate-400 hover:text-white underline"
+              className="text-xs text-slate-500 hover:text-slate-900 underline"
             >
               {showInspector ? 'Hide Telemetry' : 'Show Telemetry'}
             </button>
@@ -1328,7 +1330,7 @@ export default function TrustLayer({ setCurrentRoute }) {
           <div>
             <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 mb-4">
               {/* Metric 1 */}
-              <div className="bg-slate-950/60 border border-slate-800/80 rounded-2xl p-3">
+              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3">
                 <span className="text-[10px] text-slate-400 uppercase font-semibold">{t('signaturesLogged')}</span>
                 <div className={`text-base font-mono font-bold mt-0.5 ${tremorSignaturesCount > 0 ? 'text-teal-300' : 'text-slate-400'}`}>
                   {tremorSignaturesCount} Signatures
@@ -1337,7 +1339,7 @@ export default function TrustLayer({ setCurrentRoute }) {
               </div>
 
               {/* Metric 2 */}
-              <div className="bg-slate-950/60 border border-slate-800/80 rounded-2xl p-3">
+              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3">
                 <span className="text-[10px] text-slate-400 uppercase font-semibold">{t('sessionTimeoutLabel')}</span>
                 <div className={`text-base font-mono font-bold mt-0.5 ${capProgressPct >= 80 ? 'text-amber-400' : 'text-emerald-400'}`}>
                   {formatTime(sessionTimeElapsed)} / 5:00
@@ -1346,7 +1348,7 @@ export default function TrustLayer({ setCurrentRoute }) {
               </div>
 
               {/* Metric 3 */}
-              <div className="bg-slate-950/60 border border-slate-800/80 rounded-2xl p-3">
+              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3">
                 <span className="text-[10px] text-slate-400 uppercase font-semibold">{t('hudTremorLikelihood')}</span>
                 <div className={`text-base font-mono font-bold mt-0.5 ${liveJitterMetrics.tremorLikelihood >= 60 ? 'text-amber-400' : 'text-teal-300'}`}>
                   {liveJitterMetrics.tremorLikelihood}%
@@ -1355,7 +1357,7 @@ export default function TrustLayer({ setCurrentRoute }) {
               </div>
 
               {/* Metric 4 */}
-              <div className="bg-slate-950/60 border border-slate-800/80 rounded-2xl p-3">
+              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3">
                 <span className="text-[10px] text-slate-400 uppercase font-semibold">Security Status</span>
                 <div className={`text-sm font-mono font-bold mt-0.5 uppercase ${
                   isGracefulTimeout 
